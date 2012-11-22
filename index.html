@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>AudioPeak</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+ 
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    
+    <script src="js/jsapi"></script>
+	<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="js/prototype.js"></script>    
+    
+	<script src="js/helperscript.js" type="text/javascript"> </script>
+    <script src="js/ytoud.js" type="text/javascript"> </script>
+    <script src="tests/kees.js" type="text/javascript"> </script>
+
+</head>
+
+<body>
+
+<div id="center">
+
+    <div id="header">
+    	<span class="kleur">A</span>udio<span class="kleur">P</span>eak
+    </div>
+    
+    <div id="balk">    
+    
+    <img src="images/albums/download (1).jpg" width="225" height="225" /><img src="images/albums/download (2).jpg" width="225" height="225" class="grayscale" /><img src="images/albums/download (3).jpg" width="224" height="225" class="grayscale" /><img src="images/albums/download (4).jpg" width="225" height="225" class="grayscale" /><img src="images/albums/download (5).jpg" width="224" height="224" /> 
+    
+    </div>
+    
+  <div id="content">
+    
+    <div id="left">
+        
+      <img src="images/album.jpg" width="178" height="178" />
+              
+              Released	September 24, 1991
+    Recorded	May–June 1991 at Sound City Studios, Van Nuys and Devonshire, North           
+          <p>Hollywood, California
+      "Polly" recorded in April 1990 at Smart Studios, Madison, Wisconsin
+                Genre	Grunge
+                Length	42:38
+          <p>Label	DGC
+                Producer	Butch Vig
+                Nirvana chronology
+                Bleach
+                (1989)	Nevermind
+                (1991)	In Utero
+                (1993)
+                Singles from Nevermind
+      "Smells Like Teen           
+              <p>Spirit"
+                Released: September 1991
+      "Come as You Are"
+                Released: March 1992
+      "Lithium"
+                Released: July 1992
+      "In Bloom"
+        Released: November 1992	
+        
+
+    
+    </div>
+        
+        <div id="right">
+        
+            <form action = "php/index.php" method = "get" >
+                <input name="search" id="search" type="text" value="Zoeken...TrackList" size="60" onKeyPress="return submitenter(this,event)" />
+            </form>
+            
+            <input name="searchStr" id="inputSearchStrId" size="60" value="yt zoeken"  type="text" onKeyPress=" searchClicked()">
+            
+            <input id="run" type="button" value="runvalue"  />
+                 
+            <hr />
+
+			<div id="videoResultsDiv">	</div> 
+
+    	</div>
+        
+		<div id="footer">
+        
+            Footer<br />
+            Test<br />
+            Test.
+    
+        </div>
+    
+  </div>
+    
+</div>
+
+</body>
+
+</html>
