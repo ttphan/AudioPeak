@@ -5,7 +5,8 @@ require_once 'Auth.php';
 class Tag
 {
 	protected $name;
-	protected $count;
+	protected $count = 0;
+	protected $scaledCount = 0.0;
 	protected $url;
 	
 	
@@ -24,6 +25,16 @@ class Tag
 	public function getCount()
 	{
 		return $this->count;
+	}
+	
+	public function getScaledCount()
+	{
+		return $this->scaledCount;
+	}
+	
+	public function setScaledCount($c)
+	{
+		$this->scaledCount = $c;
 	}
 	
 	public function getUrl()

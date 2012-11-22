@@ -1,12 +1,13 @@
 <?php 
-//require '../tests/Helper.php';
 require_once 'Track.php';
 require_once 'TrackList.php';
 require_once 'Tag.php';
 require_once 'TagList.php';
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-$query = $_GET["search"];
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
+
+$query = 'rock';
 ?>
 <!doctype html>
 
@@ -21,16 +22,13 @@ $query = $_GET["search"];
 	<h1>Search results for: <?php echo $query ?></h1>
 	<pre>
 <?php
-/* $Helper = new Helper;
-print_r($Helper->searchTrack($query)); */
-
-// werkt hetzelfde voor track search
+// werkt analoog voor track search
 
 $res = new TagList();
 $res->search($query);
 foreach($res as $tag)
 {
-	echo $tag->getName() . " - " . $tag->getCount() . "\n";
+	echo $tag->getName() . " - " . $tag->getCount() . " - " . $tag->getScaledCount() * 100 . "%\n";
 }
 ?>
 	</pre>

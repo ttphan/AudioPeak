@@ -47,7 +47,8 @@ class Track
 		);
 			
 		if ($results = $trackClass->getTopTags($methodVars) ) {
-			return $results;
+			$res = new TagList();
+			return $res.fromArray($results);
 		} else {
 			$this->error();
 		}
@@ -68,7 +69,8 @@ class Track
 		);
 
 		if ($results = $trackClass->getTags($methodVars) ) {
-			return $results;
+			$res = new TagList();
+			return $res.fromArray($results);
 		} else {
 			$this->error();
 		}

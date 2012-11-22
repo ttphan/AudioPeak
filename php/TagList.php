@@ -1,11 +1,12 @@
 <?php
 require_once 'lastfmapi/lastfmapi.php';
 require_once 'Track.php';
+require_once 'Tag.php';
 require_once 'Auth.php';
 
 class TagList implements IteratorAggregate
 {
-	private $tracks = array();
+	private $tags = array();
 	private $count = 0;
 	
 	protected $numResults = 50;
@@ -24,12 +25,42 @@ class TagList implements IteratorAggregate
 	// Required by IteratorAggregate
 	public function getIterator() 
 	{
-		return new ArrayIterator($this->tracks);
+		return new ArrayIterator($this->tags);
+	}
+	
+	public function size()
+	{
+		$i;
+		foreach($this as $tag)
+			$i++;
+		
+		return $i;
 	}
 	
 	public function add($value) 
 	{
-		$this->tracks[$this->count++] = $value;
+		$this->tags[$this->count++] = $value;
+		$this->scaleCounts();
+	}
+	
+	protected function scaleCounts()
+	{
+		$maxCount = 0;
+		
+		if($this->size() > 0)
+		{
+			// get max value
+			foreach ($this->tags as $num => $tag) 
+				if($tag->getCount() > $maxCount) 
+					$maxCount = $tag->getCount();
+			
+			// scale everything relative to the max tag-count in [0 ... 1]
+			foreach ($this->tags as $tags)
+			{
+				$scaled = $tag->getCount() / $maxCount;
+				$tag->setScaledCount($scaled);
+			}
+		}
 	}
 	
 	public function reset() 
@@ -67,9 +98,10 @@ class TagList implements IteratorAggregate
 	
 	public function fromArray($arr)
 	{
-		foreach($arr['results'] as $tagData)
+		foreach($arr['results'] as $tagData) 
 		{
-			$this->add(new Tag($tagData));
+			$addTag = new Tag($tagData);
+			$this->add($addTag);
 		}
 	}
 	
