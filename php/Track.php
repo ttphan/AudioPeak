@@ -86,6 +86,11 @@ class Track
 		return $this->name;
 	}
 	
+	public function getImage()
+	{
+		return $this->image['large'];
+	}
+	
 	protected function error()
 	{
 		// TODO: proper error page / message

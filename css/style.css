@@ -91,6 +91,10 @@ img.grayscale {
 	margin-right:10px;
 }
 
+#playVideoDiv {
+	height:356px;	
+}
+
 #right {
 	float:left;
 	width:390px;
@@ -138,3 +142,4 @@ a:hover,a:active {
 	text-decoration:none;
 	color:#000;
 }
+

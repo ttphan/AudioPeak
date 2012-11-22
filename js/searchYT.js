@@ -1,18 +1,18 @@
 $(document).ready(function() {
-	$('#inputSearchStrId').keyup(function(e) {
+	$('#searchYT').keyup(function(e) {
 		// Enter key
 		if(e.keyCode == 13) {
-			searchClicked();
+			searchYT();
 		}
 	});  
 });
 	
-function searchClicked()
+function searchYT()
 {	
 	// Create an <ul> where the results are appended to
 	var list = $(document.createElement('ul')).attr('id', 'vidList');
 	
-	var searchStr = $("#inputSearchStrId").val();
+	var searchStr = $("#searchYT").val();
 	/*	
 	 *	Requests a JSON-C feed from the GData.
 	 *
@@ -32,7 +32,7 @@ function searchClicked()
 			'&max-results=8' +
 			'&orderby=relevance' +
 			'&key=AI39si7Blv0HpIGbcHtzjaS70mFR-XEcomtJFHQcKC1-4yEthFsx4AhkMFldBeE_5UyD9jEEFCPMt2jzxDLF3hPT1SRoi1La4Q', showMyVideos)
-	.complete($('#videoResultsDiv').html(list));				
+	.complete($('#ResultsDiv').html(list));				
 }
 
 /*
@@ -64,3 +64,5 @@ function createVideo(vidId) {
 		}
 	);
 }
+
+

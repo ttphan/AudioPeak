@@ -13,9 +13,9 @@ function  seachlastfm() {
 	var searchStr = $("#searchLastfm").val();
 	
 	$.ajax({
-		url: 'php/index.php?search=' + searchStr,
+		url: 'tests/kees.php?search=' + searchStr,
 		success: function(data) {
-			$('#videoResultsDiv').html(data);
+			$('#ResultsDiv').html(data);
 		}
 	});	
 }

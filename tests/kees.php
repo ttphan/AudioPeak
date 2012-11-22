@@ -1,14 +1,14 @@
 <?php 
-require_once 'Track.php';
-require_once 'TrackList.php';
-require_once 'Tag.php';
-require_once 'TagList.php';
+require_once '../php/Track.php';
+require_once '../php/TrackList.php';
+require_once '../php/Tag.php';
+require_once '../php/TagList.php';
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 
-$query = 'rock';
-
+//$query = 'rock';
+$query = $_GET["search"];
 ?>
 <!doctype html>
 
@@ -25,11 +25,11 @@ $query = 'rock';
 <?php
 // werkt analoog voor track search
 
-$res = new TagList();
+$res = new TrackList();
 $res->search($query);
-foreach($res as $tag)
+foreach($res as $track)
 {
-	echo $tag->getName() . " - " . $tag->getCount() . " - " . $tag->getScaledCount() * 100 . "%\n";
+	echo $track->getArtist() . " - " . $track->getName() . " - " .  $track->getImage() . "\n";
 }
 ?>
 	</pre>
