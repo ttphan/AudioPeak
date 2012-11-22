@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="Helper.php" server="C:/wamp/www/dwwamp" local="129978095060000000" remote="129978095060000000" />
+<file name="audiopeak.php" server="C:/wamp/www/dwwamp/" local="129978135750000000" remote="129978135750000000" />
+<file name="Auth.php" server="C:/wamp/www/dwwamp/" local="129978138700000000" remote="129978138700000000" />
+<file name="index.php" server="C:/wamp/www/dwwamp/" local="129980493856959285" remote="129980493850000000" />
+<file name="Tag.php" server="C:/wamp/www/dwwamp/" local="129978168650000000" remote="129978168650000000" />
+<file name="TagList.php" server="C:/wamp/www/dwwamp/" local="129978170360000000" remote="129978170360000000" />
+<file name="Track.php" server="C:/wamp/www/dwwamp/" local="129978136390000000" remote="129978136390000000" />
+<file name="TrackList.php" server="C:/wamp/www/dwwamp/" local="129978156660000000" remote="129978156660000000" />
 </dwsync>

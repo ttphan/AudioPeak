@@ -1,19 +1,20 @@
-// JavaScript Document
 
-//test
-window.onload = function() {
-	$("run").observe("mouseup", testfunc);		
-}
 
-//test
-function  testfunc(event) {
-	var $jq = jQuery.noConflict();
-	
-	$jq.ajax({
-		url: 'php/index.php?search=test',
-		success: function(data) {
-			$jq('#videoResultsDiv').html(data);
-			alert('Load was performed.');
-		}
-	});	
-}
+//
+//
+//function submitenter(myfield,e) {
+//	var keycode;
+//	if (window.event) keycode = window.event.keyCode;
+//	else if (e) keycode = e.which;
+//	else return true;
+//	
+//	if (keycode == 13){
+//	   myfield.form.submit();
+//	   return false;
+//	  }
+//	else
+//	   return true;
+//}
+
+
+

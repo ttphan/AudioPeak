@@ -8,14 +8,16 @@
  
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     
-    <script src="js/jsapi"></script>
+    <!-- scripts !-->
 	<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="js/prototype.js"></script>    
+    <script src="js/jquery.swfobject.1-1-1.min.js" type="text/javascript"></script>
     
-	<script src="js/helperscript.js" type="text/javascript"> </script>
-    <script src="js/ytoud.js" type="text/javascript"> </script>
-    <script src="tests/kees.js" type="text/javascript"> </script>
-
+	<script src="js/searchClicked.js" type="text/javascript"></script>
+	<script src="js/searchLastfm.js" type="text/javascript"></script>    
+    
+     <!-- TEST scripts   
+     <script src="tests/kees.js" type="text/javascript"></script>
+!--> 
 </head>
 
 <body>
@@ -35,7 +37,9 @@
   <div id="content">
     
     <div id="left">
-        
+      <!-- huidige nummer info !-->
+      
+      <!-- start dummy info !--> 
       <img src="images/album.jpg" width="178" height="178" />
               
               Released	September 24, 1991
@@ -61,24 +65,29 @@
                 Released: July 1992
       "In Bloom"
         Released: November 1992	
+        <!-- einde dummy info !--> 
         
-
     
+        <div id="playVideoDiv"></div>
+        <!-- Selected video will be shown here -->
+
     </div>
         
         <div id="right">
-        
-            <form action = "php/index.php" method = "get" >
-                <input name="search" id="search" type="text" value="Zoeken...TrackList" size="60" onKeyPress="return submitenter(this,event)" />
-            </form>
+           <!-- zoekvelden !--> 
             
-            <input name="searchStr" id="inputSearchStrId" size="60" value="yt zoeken"  type="text" onKeyPress=" searchClicked()">
+            <input name="searchLastfm" id="searchLastfm" type="text" size="60"  value="Last.fm doorzoeken" />
             
-            <input id="run" type="button" value="runvalue"  />
+            <input name="searchStr" id="inputSearchStrId" size="60" value="YouTue doorzoeken"  type="text">
                  
             <hr />
 
-			<div id="videoResultsDiv">	</div> 
+		 <div>
+
+            <div id="videoResultsDiv"></div> 
+            <!-- Results of the search will be shown here -->
+
+        </div>
 
     	</div>
         

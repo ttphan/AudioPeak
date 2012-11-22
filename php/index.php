@@ -6,7 +6,7 @@ require_once 'Tag.php';
 require_once 'TagList.php';
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-$query = 'rock';
+$query = $_GET["search"];
 ?>
 <!doctype html>
 
