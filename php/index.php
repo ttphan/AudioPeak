@@ -7,8 +7,7 @@ require_once 'TagList.php';
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE);
 
-$query = 'rock';
-
+$query = 'slow ride';
 ?>
 <!doctype html>
 
@@ -25,12 +24,9 @@ $query = 'rock';
 <?php
 // werkt analoog voor track search
 
-$res = new TagList();
+$res = new TrackList();
 $res->search($query);
-foreach($res as $tag)
-{
-	echo $tag->getName() . " - " . $tag->getCount() . " - " . $tag->getScaledCount() * 100 . "%\n";
-}
+print_r($res);
 ?>
 	</pre>
   </body>

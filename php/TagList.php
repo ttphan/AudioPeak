@@ -4,30 +4,86 @@ require_once 'Track.php';
 require_once 'Tag.php';
 require_once 'Auth.php';
 
+/**
+ *  track objects of this class are iterable in a foreach loop
+ *  thank IteratorAggregate for this
+ */
 class TagList implements IteratorAggregate
 {
+	/**
+	 *  Store all the tag objects
+	 *
+	 *  @access private
+	 *  @var array
+	 */
 	private $tags = array();
+	/**
+	 *  the number of tracks
+	 *  
+	 *  @access private
+	 *  @var int
+	 */
 	private $count = 0;
 	
+	/**
+	 *  the number of results to be returned
+	 *  from the last.fm api
+	 *
+	 *  @access protected
+	 *  @var int
+	 */
 	protected $numResults = 50;
 	
+	/**
+	 *  authentication object used for the api
+	 *  
+	 *  @access protected
+	 *  @var lastfmApiAuth
+	 */
 	protected $auth;
+	
+	/**
+	 *  the last.fm api object
+	 *
+	 *  @access protected
+	 *  @var lastfmApi
+	 */
 	protected $apiClass;
+	
+	/**
+	 *  config array used by the api
+	 *
+	 *  @access protected
+	 *  @var array
+	 */
 	protected $config;
 	
-	public function TagList()
+	/**
+	 *  Class constructor
+	 */
+	public function __construct()
 	{
 		$this->auth 	= Auth::getAuth();
 		$this->apiClass = Auth::getApi();
 		$this->config	= Auth::getConfig();
 	}
 	
-	// Required by IteratorAggregate
+	/**
+	 *  Required by IteratorAggregate
+	 *  
+	 *  @return ArrayIterator
+	 */
 	public function getIterator() 
 	{
 		return new ArrayIterator($this->tags);
 	}
 	
+	/**
+	 *  get the number of tags
+	 *  over-engineered, I know...
+	 *  
+	 *  @return int
+	 */
 	public function size()
 	{
 		$i;
@@ -37,12 +93,21 @@ class TagList implements IteratorAggregate
 		return $i;
 	}
 	
+	/**
+	 *  Add a tag to this list and rescale
+	 *  
+	 *  @param Tag $value
+	 */
 	public function add($value) 
 	{
 		$this->tags[$this->count++] = $value;
 		$this->scaleCounts();
 	}
 	
+	/**
+	 *  Scale all the tag counts to [0 .. 1]
+	 *  similar to tag popularity / relevance
+	 */
 	protected function scaleCounts()
 	{
 		$maxCount = 0;
@@ -63,6 +128,9 @@ class TagList implements IteratorAggregate
 		}
 	}
 	
+	/**
+	 * Clear this taglist of any data
+	 */
 	public function reset() 
 	{
 		$track = array();
@@ -96,6 +164,11 @@ class TagList implements IteratorAggregate
 		}
 	}
 	
+	/**
+	 * Composes this tracklist from an api response array
+	 *
+	 * @param array $arr
+	 */
 	public function fromArray($arr)
 	{
 		foreach($arr['results'] as $tagData) 
@@ -105,6 +178,11 @@ class TagList implements IteratorAggregate
 		}
 	}
 	
+	/**
+	 * Compute and display an error
+	 *
+	 * @todo complete this
+	 */
 	protected function error()
 	{
 		// TODO: proper error page / message
