@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+           xml:lang="en" lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AudioPeak</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>	
+    <script src="http://jquery.thewikies.com/swfobject/jquery.swfobject.1-1-1.min.js"></script>
+	<script src="lib/searchClicked.js"></script>
+
+    </head>
+
+    <body id="page">
+        <div>
+            <p>
+                <input name="searchStr" id="inputSearchStrId" type="text">
+                <input name="searchButton" type="submit" 
+                  value="Zoek!" onclick="searchClicked()"/>               
+            </p>
+            Results:<br/>
+            <div id="videoResultsDiv"></div> 
+            <!-- Results of the search will be shown here -->
+            <div id="playVideoDiv"></div>
+            <!-- Selected video will be shown here -->
+        </div>
+    </body>
+</html>
