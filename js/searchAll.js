@@ -25,24 +25,29 @@ function searchAll() {
 		dataType: 'json',
 		success: function(json) {
 		  showResults(json);
-		}
+		},
+    	error: function (xhr, ajaxOptions, thrownError) {
+			//TODO goed afhandelen.
+			$('#ResultsDiv').html('Error: Mogelijk geen resultaten gevonden in Last.fm');
+      	}
 	});
 }
 
 function showResults(json){
 	//maak resulsdiv leeg
 	$('#ResultsDiv').html('');
+	console.log(json);
+	
 	
 	//haal vars uit json opject plaats deze in de resultsdiv met een span id van i. i wordt doorgegeven aan seachYT om daar de youtube play link te plaatsen
-	//ook de image var uit deze json wordt doorgegevn zodat showmyvideo deze ook kan plaatsen
+	//ook de image var uit deze json wordt doorgegevn zodat showButton deze ook kan plaatsen
 	for (var i=0;i<json.length;i++) { 
 		var artist = json[i].artist_php;
 		var trackName = json[i].trackName_php;
 		var image = json[i].trackImage_php;
 		$('#ResultsDiv').append(artist + ' - ' + trackName + ' <span id=\"' + i + '\" ></span><br>' );		
 		searchYT(artist, trackName, i, image)
-	}
-	
+	}	
 }
 
 function searchYT(artist, trackName, i, image){	
@@ -59,7 +64,7 @@ function searchYT(artist, trackName, i, image){
 	 *	&key=[KEY]: Google Developer Key, to avoid the public quota, compared to anonymous requests
 	 *
 	 */
-	//gebruik json om te zoeken en geef deze data door aan showmyvideo met i en image.
+	//gebruik json om te zoeken en geef deze data door aan showButton met i en image.
 	$.getJSON('https://gdata.youtube.com/feeds/api/videos?v=2' +
 			'&alt=jsonc&q=' +
 			searchStr + 
@@ -68,35 +73,48 @@ function searchYT(artist, trackName, i, image){
 			'&max-results=1' +
 			'&orderby=relevance' +
 			'&key=AI39si7Blv0HpIGbcHtzjaS70mFR-XEcomtJFHQcKC1-4yEthFsx4AhkMFldBeE_5UyD9jEEFCPMt2jzxDLF3hPT1SRoi1La4Q', function(data) {
-				showMyVideo(data, i, image);
+				showButton(data, i, image);
 			});				
 }
 
 // See https://developers.google.com/youtube/2.0/developers_guide_jsonc#Understanding_JSONC for the feed information
-function showMyVideo(transport, j, image) {
-	//haal de id van de video uit de transport data.
+function showButton(transport, j, image) {
 	var entries	= transport.data.items || [];
-	var id = entries[0].id;
 	
-	//plaats een play button als de ytplayer klaar is met afspelen	
-	if (YTplayerState == 0){
-		var button = '<a href = \"javascript:createVideo(\''+ id +'\',\''+ image + '\')\">play</a>';
+	if (entries[0] === undefined){
+		var button = '<a href=\"#\">NoYT</a>';
 		$('#'+j).append(' ' + button);
 	}
-	//plaats een playnext button als e ytplayer nog aan het afspelen is
-	else {
-		var button = '<a href = \"javascript:playnext(\''+ id +'\',\''+ image + '\')\">playNEXT</a>';
-		$('#'+j).append(' ' + button);
+	else{
+		//haal de id van de video uit de transport data.
+		var id = entries[0].id;
+		
+		//plaats een play button als de ytplayer klaar is met afspelen	
+		if (YTplayerState == 0){
+			var button = '<a href = \"javascript:createVideo(\''+ id +'\',\''+ image + '\')\">play</a>';
+			$('#'+j).append(' ' + button);
+		}
+		//plaats een playnext button als e ytplayer nog aan het afspelen is
+		else {
+			var button = '<a href = \"javascript:playnext(\''+ id +'\',\''+ image + '\')\">playNEXT</a>';
+			$('#'+j).append(' ' + button);
+		}
 	}
 }
 
 //laat de video zien als er op lay wordt gedrukt, en plaats de image.
 function createVideo(vidId, image) {
-	$('#album').attr('src',image);
-	$('#huidigenummerbalk').attr('src',image);
+	if(image == ''){
+		//vervangen door niet gevonden img. zoek op Plasticman Cha Vocal die heeft geen afbeelding
+		$('#album').attr('src','images/album.jpg');
+		$('#huidigenummerbalk').attr('src','images/album.jpg');		
+	}
+	else{
+		$('#album').attr('src',image);
+		$('#huidigenummerbalk').attr('src',image);
+	}
 		
-	$('#playVideoDiv').flash(
-		{	
+	$('#playVideoDiv').flash({	
 			id: 'ytplayer',
 			swf: 'http://www.youtube.com/v/' + vidId + '?enablejsapi=1&playerapiid=ytplayer&version=3&autoplay=1',
 			width: 425,
@@ -108,10 +126,17 @@ function createVideo(vidId, image) {
 
 //volgende nummer TODO
 function playnext(vidId, image) {	
-	$('#nieuwnummerbalk').attr('src',image);
+	if(image == ''){
+		//vervangen door niet gevonden img
+		$('#nieuwnummerbalk').attr('src','images/album.jpg');		
+	}
+	else{
+		$('#nieuwnummerbalk').attr('src',image);
+	}
+
 }
 
-//event listners voor YTplayerState zodat showmyvideo weet of een een play of playnext knop geplaatst moet worden. 
+//event listners voor YTplayerState zodat showButton weet of een een play of playnext knop geplaatst moet worden. 
 function onYouTubePlayerReady(playerId) {
 	ytplayer = document.getElementById("ytplayer");
   	ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
