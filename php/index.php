@@ -26,7 +26,7 @@ $query = 'slow ride';
 
 $res = new TrackList();
 $res->search($query);
-print_r($res);
+print_r("size: " . $res->size());
 ?>
 	</pre>
   </body>

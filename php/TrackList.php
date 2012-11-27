@@ -13,10 +13,10 @@ class TrackList implements IteratorAggregate
 	/**
 	 *  Store all the track objects
 	 *  
-	 *  @access private
+	 *  @access protected
 	 *  @var array
 	 */
-	private $tracks = array();
+	protected $tracks = array();
 	
 	/**
 	 *  the number of tracks
@@ -33,7 +33,7 @@ class TrackList implements IteratorAggregate
 	 *  @access protected
 	 *  @var int
 	 */
-	protected $numResults = 5;
+	protected $numResults = 15;
 	
 	/**
 	 *  authentication object used for the api
@@ -82,22 +82,32 @@ class TrackList implements IteratorAggregate
 	/**
 	 *  Get a specific track by index
 	 *
-	 *  @param  int $index
+	 *  @param int $index
 	 *  @return Track
 	 */
 	public function get($index)
 	{
-		return $tracks[$index];
+		return $this->tracks[$index];
 	}
 	
 	/**
 	 * Add a track to this tracklist
 	 *
-	 * @param  Track $value
+	 * @param Track $value
 	 */
 	public function add($value) 
 	{
 		$this->tracks[$this->count++] = $value;
+	}
+	
+	/**
+	 * get the number of tracks
+	 *
+	 * @return int
+	 */
+	public function size()
+	{
+		return $this->count;
 	}
 	
 	/**

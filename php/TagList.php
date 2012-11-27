@@ -79,18 +79,13 @@ class TagList implements IteratorAggregate
 	}
 	
 	/**
-	 *  get the number of tags
-	 *  over-engineered, I know...
+	 *  get the number of tags in the list
 	 *  
 	 *  @return int
 	 */
 	public function size()
 	{
-		$i;
-		foreach($this as $tag)
-			$i++;
-		
-		return $i;
+		return $this->count;
 	}
 	
 	/**

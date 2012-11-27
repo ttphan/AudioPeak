@@ -83,7 +83,7 @@ class Track
 	 *  
 	 *  @param array $arr array with last.fm api track data
 	 */
-	public function Track(array $arr)
+	public function __construct(array $arr)
 	{
 		$this->name 		= $arr['name'];
 		$this->artist 		= $arr['artist'];
@@ -150,6 +150,11 @@ class Track
 	public function getName()
 	{
 		return $this->name;
+	}
+	
+	public function getImage()
+	{
+		return $this->image['large'];
 	}
 	
 	/**

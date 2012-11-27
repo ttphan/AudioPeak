@@ -4,20 +4,18 @@
 <head>
 	<title>AudioPeak</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
  
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     
     <!-- scripts !-->
 	<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="js/jquery.swfobject.1-1-1.min.js" type="text/javascript"></script>
+       
+    <script src="js/searchAll.js" type="text/javascript"></script>   
     
-	<script src="js/searchYT.js" type="text/javascript"></script>
-	<script src="js/searchLastfm.js" type="text/javascript"></script>    
-    
-     <!-- TEST scripts   
-     <script src="tests/kees.js" type="text/javascript"></script>
-!--> 
+    <!-- TEST scripts   
+    <script src="tests/kees.js" type="text/javascript"></script>
+	!--> 
 </head>
 
 <body>
@@ -30,7 +28,11 @@
     
     <div id="balk">    
     
-    <img src="images/albums/download (1).jpg" width="225" height="225" /><img src="images/albums/download (2).jpg" width="225" height="225" class="grayscale" /><img src="images/albums/download (3).jpg" width="224" height="225" class="grayscale" /><img src="images/albums/download (4).jpg" width="225" height="225" class="grayscale" /><img src="images/albums/download (5).jpg" width="224" height="224" /> 
+    <img src="images/albumnext.jpg" alt="alubmimg" id="huidigenummerbalk" />
+    <img src="images/emty.png" alt="alubmimg" class="grayscale" />
+    <img src="images/emty.png" alt="alubmimg" class="grayscale" />
+    <img src="images/emty.png" alt="alubmimg" class="grayscale" />
+    <img src="images/albumnext.jpg" alt="alubmimg" id="nieuwnummerbalk" /> 
     
     </div>
     
@@ -40,31 +42,9 @@
       <!-- huidige nummer info !-->
       
       <!-- start dummy info !--> 
-      <img src="images/album.jpg" width="178" height="178" />
+      <img src="images/album.jpg" alt="alubmimg" id="album" />
               
-              Released	September 24, 1991
-    Recorded	May–June 1991 at Sound City Studios, Van Nuys and Devonshire, North           
-          <p>Hollywood, California
-      "Polly" recorded in April 1990 at Smart Studios, Madison, Wisconsin
-                Genre	Grunge
-                Length	42:38
-          <p>Label	DGC
-                Producer	Butch Vig
-                Nirvana chronology
-                Bleach
-                (1989)	Nevermind
-                (1991)	In Utero
-                (1993)
-                Singles from Nevermind
-      "Smells Like Teen           
-              <p>Spirit"
-                Released: September 1991
-      "Come as You Are"
-                Released: March 1992
-      "Lithium"
-                Released: July 1992
-      "In Bloom"
-        Released: November 1992	
+              <span id="title"></span>
         <!-- einde dummy info !--> 
         
     
@@ -75,10 +55,8 @@
         
         <div id="right">
            <!-- zoekvelden !--> 
-            
-            <input name="searchLastfm" id="searchLastfm" type="text" size="60"  value="Last.fm doorzoeken" />
-            
-            <input name="searchYT" id="searchYT" size="60" value="YouTue doorzoeken"  type="text">
+           
+           <input name="searchAll" id="searchAll" type="text" size="60" width="100px"  value="Last.fm doorzoeken en youtube playknop bij doen." />
                  
             <hr />
 
@@ -93,11 +71,13 @@
         
 		<div id="footer">
         
-            Footer<br />
-            Test<br />
-            Test.
+        
+        
+            AudioPeak&copy; versie: 2.0<br />
+Kees Lampe, Joren Hammudoglu, Tung Phan
+
     
-        </div>
+    </div>
     
   </div>
     

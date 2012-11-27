@@ -38,7 +38,7 @@ class Tag
 	 *
 	 *  @param array $arr array with last.fm api track data
 	 */
-	public function Tag(array $arr)
+	public function __construct(array $arr)
 	{
 		$this->name 		= $arr['name'];
 		$this->count 		= $arr['count'];

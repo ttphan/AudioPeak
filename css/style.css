@@ -92,7 +92,9 @@ img.grayscale {
 }
 
 #playVideoDiv {
-	height:356px;	
+	height:356px;
+	width:425px;
+	overflow:hidden;
 }
 
 #right {
