@@ -20,9 +20,21 @@ class FillerList extends TrackList
 	 */
 	public function fillerNeeded()
 	{
-		$startTags = $this->start->getTags();
-		$endTags = $this->end->getTags();
+		return !$this->hasOverlappingTags($this->start, $this->end);
+	}
+	
+	/**
+	 * Check if track1 and 2 have overlapping tags
+	 * 
+	 * @param Track $track1
+	 * @param Track $track2
+	 * @return boolean
+	 */
+	public static function hasOverlappingTags(Track $track1, Track $track2)
+	{
+		$startTags = $track1->getTags();
+		$endTags = $track2->getTags();
 		$union = $startTags->union($endTags);
-		return $union->size() == 0;
+		return !$union->size() == 0;
 	}
 }

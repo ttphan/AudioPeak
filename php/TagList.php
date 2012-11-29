@@ -53,18 +53,23 @@ class TagList extends AbstractList
 		
 		if($this->size() > 0)
 		{
-			// get max value
-			foreach ($this->tags as $num => $tag) 
-				if($tag->getCount() > $maxCount) 
-					$maxCount = $tag->getCount();
+			$sum = $this->getSumCount();
 			
-			// scale everything relative to the max tag-count in [0 ... 1]
 			foreach ($this->tags as $tags)
 			{
-				$scaled = $tag->getCount() / $maxCount;
+				$scaled = $tag->getCount() / $sum;
 				$tag->setScaledCount($scaled);
 			}
 		}
+	}
+	
+	private function getSumCount()
+	{
+		$sum = 0;
+		foreach($this as $tag)
+			$sum += $tag->getCount();
+		
+		return $sum;
 	}
 	
 	/**
