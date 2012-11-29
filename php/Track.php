@@ -1,8 +1,7 @@
 <?php
-require_once 'lastfmapi/lastfmapi.php';
-require_once 'Auth.php';
+require_once 'AbstractItem.php';
 
-class Track
+class Track extends AbstractItem
 {
 	/**
 	 *  name of the track
@@ -103,40 +102,19 @@ class Track
 	 *
 	 * @return TagList
 	 */
-	public function getTopTags()
+	public function getTags()
 	{
 		$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
 			
 		$methodVars = array(
 				'artist' => $this->artist,
-				'track' => $this->track
+				'track'  => $this->name
 		);
 			
 		if ($results = $trackClass->getTopTags($methodVars) ) {
 			$res = new TagList();
-			return $res.fromArray($results);
-		} else {
-			$this->error();
-		}
-	}
-	
-	/**
-	 * Get all tags
-	 *
-	 * @return TagList
-	 */
-	public function getTags()
-	{
-		$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
-
-		$methodVars = array(
-				'artist' => $this->artist,
-				'track' => $this->track
-		);
-
-		if ($results = $trackClass->getTags($methodVars) ) {
-			$res = new TagList();
-			return $res.fromArray($results);
+			$res->fromArray($results);
+			return $res;
 		} else {
 			$this->error();
 		}
@@ -150,21 +128,5 @@ class Track
 	public function getName()
 	{
 		return $this->name;
-	}
-	
-	public function getImage()
-	{
-		return $this->image['large'];
-	}
-	
-	/**
-	 * Compute and display an error
-	 *
-	 * @todo complete this
-	 */
-	protected function error()
-	{
-		// TODO: proper error page / message
-		die('<b>Error '.$this->trackClass->error['code'].' - </b><i>'.$this->trackClass->error['desc'].'</i>');
 	}
 }

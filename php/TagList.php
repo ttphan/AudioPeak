@@ -1,107 +1,51 @@
 <?php
-require_once 'lastfmapi/lastfmapi.php';
-require_once 'Track.php';
-require_once 'Tag.php';
-require_once 'Auth.php';
+require_once 'AbstractList.php';
 
 /**
  *  track objects of this class are iterable in a foreach loop
  *  thank IteratorAggregate for this
  */
-class TagList implements IteratorAggregate
+class TagList extends AbstractList
 {
 	/**
-	 *  Store all the tag objects
-	 *
-	 *  @access private
-	 *  @var array
+	 * minimum tag count; tags with counts
+	 * below this value will be stripped away
+	 * 
+	 * @var int
+	 * @access protected
 	 */
-	private $tags = array();
-	/**
-	 *  the number of tracks
-	 *  
-	 *  @access private
-	 *  @var int
-	 */
-	private $count = 0;
-	
-	/**
-	 *  the number of results to be returned
-	 *  from the last.fm api
-	 *
-	 *  @access protected
-	 *  @var int
-	 */
-	protected $numResults = 50;
-	
-	/**
-	 *  authentication object used for the api
-	 *  
-	 *  @access protected
-	 *  @var lastfmApiAuth
-	 */
-	protected $auth;
-	
-	/**
-	 *  the last.fm api object
-	 *
-	 *  @access protected
-	 *  @var lastfmApi
-	 */
-	protected $apiClass;
-	
-	/**
-	 *  config array used by the api
-	 *
-	 *  @access protected
-	 *  @var array
-	 */
-	protected $config;
+	protected $minCount = 15;
 	
 	/**
 	 *  Class constructor
 	 */
 	public function __construct()
 	{
-		$this->auth 	= Auth::getAuth();
-		$this->apiClass = Auth::getApi();
-		$this->config	= Auth::getConfig();
+		parent::__construct();
 	}
 	
 	/**
-	 *  Required by IteratorAggregate
-	 *  
-	 *  @return ArrayIterator
+	 *  Makes a new taglist containing all overlapping
+	 *  tags of this and other
+	 *
+	 *  @return TagList
 	 */
-	public function getIterator() 
+	public function union($other)
 	{
-		return new ArrayIterator($this->tags);
-	}
-	
-	/**
-	 *  get the number of tags in the list
-	 *  
-	 *  @return int
-	 */
-	public function size()
-	{
-		return $this->count;
-	}
-	
-	/**
-	 *  Add a tag to this list and rescale
-	 *  
-	 *  @param Tag $value
-	 */
-	public function add($value) 
-	{
-		$this->tags[$this->count++] = $value;
-		$this->scaleCounts();
+		$res = new TagList();
+		if($other instanceof TagList)
+			foreach($this as $thisTag)
+				foreach($other as $thatTag)
+					if($thisTag->equals($thatTag))
+						$res->add($thisTag);
+						
+		return $res;
 	}
 	
 	/**
 	 *  Scale all the tag counts to [0 .. 1]
 	 *  similar to tag popularity / relevance
+	 *  for roulette wheel selection
 	 */
 	protected function scaleCounts()
 	{
@@ -121,15 +65,6 @@ class TagList implements IteratorAggregate
 				$tag->setScaledCount($scaled);
 			}
 		}
-	}
-	
-	/**
-	 * Clear this taglist of any data
-	 */
-	public function reset() 
-	{
-		$track = array();
-		$count = 0;
 	}
 	
 	/**
@@ -166,21 +101,18 @@ class TagList implements IteratorAggregate
 	 */
 	public function fromArray($arr)
 	{
-		foreach($arr['results'] as $tagData) 
-		{
-			$addTag = new Tag($tagData);
-			$this->add($addTag);
+		if(array_key_exists('results', $arr))
+			$key = 'results';
+		elseif(array_key_exists('tags', $arr))
+			$key = 'tags';
+		else
+			error('no such key in array');
+		
+		foreach($arr[$key] as $tagData) {
+			if($tagData['count'] > $this->minCount) {
+				$addTag = new Tag($tagData);
+				$this->add($addTag);
+			}
 		}
-	}
-	
-	/**
-	 * Compute and display an error
-	 *
-	 * @todo complete this
-	 */
-	protected function error()
-	{
-		// TODO: proper error page / message
-		die('<b>Error '.$this->trackClass->error['code'].' - </b><i>'.$this->trackClass->error['desc'].'</i>');
 	}
 }

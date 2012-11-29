@@ -1,7 +1,7 @@
 <?php
 require_once TagList.php;
 
-class Playlist extends TagList
+class PlayList extends TagList
 {
 	/**
 	 *  Current song playing
@@ -66,4 +66,6 @@ class Playlist extends TagList
 		
 		return parent::get($next);
 	}
+	
+	
 }

@@ -1,8 +1,7 @@
 <?php
-require_once 'lastfmapi/lastfmapi.php';
-require_once 'Auth.php';
+require_once 'AbstractItem.php';
 
-class Tag
+class Tag extends AbstractItem
 {
 	/**
 	 * tag name
@@ -43,6 +42,11 @@ class Tag
 		$this->name 		= $arr['name'];
 		$this->count 		= $arr['count'];
 		$this->url 			= $arr['url'];
+	}
+	
+	public function equals($other)
+	{
+		return $other instanceof Track && $other->getName() == $this->getName();
 	}
 	
 	public function getName()
