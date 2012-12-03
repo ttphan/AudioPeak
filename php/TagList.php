@@ -55,7 +55,7 @@ class TagList extends AbstractList
 		{
 			$sum = $this->getSumCount();
 			
-			foreach ($this->tags as $tags)
+			foreach ($this as $tag)
 			{
 				$scaled = $tag->getCount() / $sum;
 				$tag->setScaledCount($scaled);
@@ -88,14 +88,12 @@ class TagList extends AbstractList
 					'limit' => $this->numResults
 			);
 	
-			if ($results = $tagClass->search($methodVars) ) {
+			if ($results = $tagClass->search($methodVars) )
 				$this->fromArray($results);
-			} else {
-				// TODO: proper error page / message
-				die('<b>Error '.$this->tagClass->error['code'].' - </b><i>'.$this->tagClass->error['desc'].'</i>');
-			}
+			else
+				$this->error("error using search");
 		} else {
-			$this->error();
+			$this->error("error using search");
 		}
 	}
 	
@@ -119,5 +117,26 @@ class TagList extends AbstractList
 				$this->add($addTag);
 			}
 		}
+		
+		$this->scaleCounts();
+	}
+	
+	/**
+	 * Get a random tag based on roulette wheel
+	 * selection
+	 * 
+	 * @return Tag
+	 */
+	public function getRandom()
+	{
+		$pin = mt_rand(0,100) / 100;
+		
+		foreach($this as $tag) {
+			$sum += $tag->getScaledCount();
+			if($pin <= $sum)
+				return $tag;
+		}
+		
+		$this->error("error whilst finding a random tag");
 	}
 }

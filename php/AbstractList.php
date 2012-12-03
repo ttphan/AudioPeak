@@ -115,6 +115,14 @@ abstract class AbstractList implements IteratorAggregate
 		$count = 0;
 	}
 	
+	public function exists(Item $item)
+	{
+		foreach($this as $temp) {
+			
+		}
+		return false;
+	}
+	
 	/**
 	 * Compute and display an error
 	 *
@@ -122,7 +130,6 @@ abstract class AbstractList implements IteratorAggregate
 	 */
 	protected function error($msg = 'unknown')
 	{
-		// TODO: proper error page / message
 		die('<b>Error msg: </b> '.$msg);
 	}
 	

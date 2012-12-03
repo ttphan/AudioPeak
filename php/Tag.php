@@ -23,7 +23,7 @@ class Tag extends AbstractItem
 	 * @access protected
 	 * @var decimal
 	 */
-	protected $scaledCount = 0.0;
+	protected $scaledCount;
 	/**
 	 * url to the last.fm tag page
 	 *

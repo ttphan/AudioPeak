@@ -78,11 +78,21 @@ class Track extends AbstractItem
 	protected $config;
 	
 	/**
-	 *  Class constructor
+	 *  Class constructor (with a workaround for overloading)
 	 *  
-	 *  @param array $arr array with last.fm api track data
+	 *  @param array $arr
 	 */
-	public function __construct(array $arr)
+	public function __construct($arr = null)
+	{
+		$this->auth 		= Auth::getAuth();
+		$this->apiClass 	= Auth::getApi();
+		$this->config		= Auth::getConfig();
+		
+		if($arr != null)
+			$this->fromArray($arr);
+	}
+	
+	protected function fromArray($arr)
 	{
 		$this->name 		= $arr['name'];
 		$this->artist 		= $arr['artist'];
@@ -91,10 +101,6 @@ class Track extends AbstractItem
 		$this->fulltrack 	= (bool) $arr['fulltrack'];
 		$this->listeners 	= $arr['listeners'];
 		$this->image 		= $arr['image'];
-		
-		$this->auth 		= Auth::getAuth();
-		$this->apiClass 	= Auth::getApi();
-		$this->config		= Auth::getConfig();
 	}
 	
 	/**
@@ -120,19 +126,19 @@ class Track extends AbstractItem
 		}
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function getArtist()
 	{
 		return $this->artist;
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
-	
-	public function getImage()
-	{
-		return $this->image['large'];
-	}
-	
 }
