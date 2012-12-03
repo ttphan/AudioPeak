@@ -3,7 +3,8 @@ $(document).ready(function() {
 	$('#searchAll').keyup(function(e) {
 		// Enter key
 		if(e.keyCode == 13) {
-			searchAll();
+			var search = $("#searchAll").val();
+			searchAll(search);
 		}
 	});  
 
@@ -11,15 +12,14 @@ $(document).ready(function() {
 
 var YTplayerState = 0;
 
-function searchAll() {
-	//TODO vervangen door loader gif.
-	$('#ResultsDiv').html('Shit is aan het laden');
+function searchAll(search) {
+	//loader gif zolang ajax bezig is.
+	$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
 	
 	//zoek gebruik makende van kees.php welke een json object echo't.
-	var search = $("#searchAll").val();
 	$.ajax({
 		type: "GET",
-		url: "tests/kees.php",
+		url: "tests/seachAll_ajaxjson.php",
 		data: "search="+search,
 		cache: false,
 		dataType: 'json',
@@ -36,21 +36,21 @@ function searchAll() {
 function showResults(json){
 	//maak resulsdiv leeg
 	$('#ResultsDiv').html('');
-	console.log(json);
-	
-	
+		
 	//haal vars uit json opject plaats deze in de resultsdiv met een span id van i. i wordt doorgegeven aan seachYT om daar de youtube play link te plaatsen
 	//ook de image var uit deze json wordt doorgegevn zodat showButton deze ook kan plaatsen
 	for (var i=0;i<json.length;i++) { 
 		var artist = json[i].artist_php;
 		var trackName = json[i].trackName_php;
 		var image = json[i].trackImage_php;
-		$('#ResultsDiv').append(artist + ' - ' + trackName + ' <span id=\"' + i + '\" ></span><br>' );		
-		searchYT(artist, trackName, i, image)
+		$('#ResultsDiv').append('<span id=\"' + i + '\" ></span> ' + artist + ' - ' + trackName + '<br>' );
+		var trackData = new Array();
+			trackData[0] = json[i].topTags_php;	
+		searchYT(artist, trackName, i, image, trackData)
 	}	
 }
 
-function searchYT(artist, trackName, i, image){	
+function searchYT(artist, trackName, i, image, trackData){	
 	//zoek string
 	var searchStr = artist + ' ' + trackName;
 	/*	
@@ -73,12 +73,12 @@ function searchYT(artist, trackName, i, image){
 			'&max-results=1' +
 			'&orderby=relevance' +
 			'&key=AI39si7Blv0HpIGbcHtzjaS70mFR-XEcomtJFHQcKC1-4yEthFsx4AhkMFldBeE_5UyD9jEEFCPMt2jzxDLF3hPT1SRoi1La4Q', function(data) {
-				showButton(data, i, image);
+				showButton(data, i, image, artist, trackName, trackData);
 			});				
 }
 
 // See https://developers.google.com/youtube/2.0/developers_guide_jsonc#Understanding_JSONC for the feed information
-function showButton(transport, j, image) {
+function showButton(transport, j, image, artist, trackName, trackData) {
 	var entries	= transport.data.items || [];
 	
 	if (entries[0] === undefined){
@@ -91,28 +91,31 @@ function showButton(transport, j, image) {
 		
 		//plaats een play button als de ytplayer klaar is met afspelen	
 		if (YTplayerState == 0){
-			var button = '<a href = \"javascript:createVideo(\''+ id +'\',\''+ image + '\')\">play</a>';
+			var button = '<a href = \"javascript:createVideo(\''+ id +'\',\''+ image +'\',\''+ artist +'\',\''+ trackName +'\',\''+ trackData + '\')\"><img src="images/playbutton.png" width="15" height="15" alt="play"></a>';
 			$('#'+j).append(' ' + button);
 		}
 		//plaats een playnext button als e ytplayer nog aan het afspelen is
 		else {
-			var button = '<a href = \"javascript:playnext(\''+ id +'\',\''+ image + '\')\">playNEXT</a>';
+			var button = '<a href = \"javascript:playnext(\''+ id +'\',\''+ image +'\',\''+ artist +'\',\''+ trackName +'\',\''+ trackData + '\')\">playNEXT</a>';
 			$('#'+j).append(' ' + button);
 		}
 	}
 }
 
 //laat de video zien als er op lay wordt gedrukt, en plaats de image.
-function createVideo(vidId, image) {
+//TODO eartist, trackName info en extra info laten zienvvvvv
+function createVideo(vidId, image, artist, trackName, trackData) {
 	if(image == ''){
-		//vervangen door niet gevonden img. zoek op Plasticman Cha Vocal die heeft geen afbeelding
-		$('#album').attr('src','images/album.jpg');
-		$('#huidigenummerbalk').attr('src','images/album.jpg');		
+		//zoek op Plasticman Cha Vocal die heeft geen afbeelding
+		$('#album').attr('src','images/albumgeen.jpg');
+		$('#huidigenummerbalk').attr('src','images/albumgeen.jpg');		
 	}
 	else{
 		$('#album').attr('src',image);
 		$('#huidigenummerbalk').attr('src',image);
 	}
+	$('#artist').html('<a href = \"javascript:searchAll(\'' + artist + '\')\">' + artist + '</a>');
+	$('#trackName').html(trackName);
 		
 	$('#playVideoDiv').flash({	
 			id: 'ytplayer',
@@ -121,19 +124,17 @@ function createVideo(vidId, image) {
 			height: 356,
 			allowScriptAccess: 'always',
 		}
-	);
+	);	
 }
 
 //volgende nummer TODO
 function playnext(vidId, image) {	
 	if(image == ''){
-		//vervangen door niet gevonden img
-		$('#nieuwnummerbalk').attr('src','images/album.jpg');		
+		$('#nieuwnummerbalk').attr('src','images/albumgeen.jpg');		
 	}
 	else{
 		$('#nieuwnummerbalk').attr('src',image);
 	}
-
 }
 
 //event listners voor YTplayerState zodat showButton weet of een een play of playnext knop geplaatst moet worden. 

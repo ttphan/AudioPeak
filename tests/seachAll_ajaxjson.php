@@ -18,7 +18,7 @@ foreach($res as $track) {
 	$array = array(
 		'artist_php' => $track->getArtist(),
 		'trackName_php'=> $track->getName(),
-		'trackImage_php'=> $track->getImage()
+		'trackImage_php'=> $track->getImage(),
 	);       	
 	array_push($resArray, $array);
 }
