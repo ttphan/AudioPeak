@@ -25,17 +25,12 @@ class TrackList extends AbstractList
 		if($query != '')
 		{
 			$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
-			
 			$methodVars = array(
 					'track' => $query,
 					'limit' => $this->numResults
 			);
-	
 			if ($results = $trackClass->search($methodVars) ) {
 				$this->fromArray($results);
-			} else {
-				// TODO: proper error page / message
-				die('<b>Error '.$this->trackClass->error['code'].' - </b><i>'.$this->trackClass->error['desc'].'</i>');
 			}
 		} else {
 			$this->error();
