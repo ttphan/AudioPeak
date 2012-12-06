@@ -25,15 +25,17 @@ class TrackList extends AbstractList
 		if($query != '')
 		{
 			$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
+			
 			$methodVars = array(
 					'track' => $query,
 					'limit' => $this->numResults
 			);
+	
 			if ($results = $trackClass->search($methodVars) ) {
 				$this->fromArray($results);
-			}
+			} //else no results
 		} else {
-			$this->error();
+			$this->error("provide a search query, you dickhead");
 		}
 	}
 	
@@ -44,8 +46,8 @@ class TrackList extends AbstractList
 	 */
 	public function fromArray($arr)
 	{
-		foreach($arr['results'] as $trackData)
-		{
+		$arr = array_key_exists('results', $arr) ? $arr['results'] : $arr;
+		foreach($arr as $trackData)	{
 			$this->add(new Track($trackData));
 		}
 	}

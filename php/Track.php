@@ -54,30 +54,6 @@ class Track extends AbstractItem
 	protected $image = array();
 	
 	/**
-	 *  authentication object used for the api
-	 *  
-	 *  @access protected
-	 *  @var lastfmApiAuth
-	 */
-	protected $auth;
-	
-	/**
-	 *  the last.fm api object
-	 *
-	 *  @access protected
-	 *  @var lastfmApi
-	 */
-	protected $apiClass;
-	
-	/**
-	 *  config array used by the api
-	 *
-	 *  @access protected
-	 *  @var array
-	 */
-	protected $config;
-	
-	/**
 	 *  Class constructor (with a workaround for overloading)
 	 *  
 	 *  @param array $arr
@@ -92,7 +68,7 @@ class Track extends AbstractItem
 			$this->fromArray($arr);
 	}
 	
-	protected function fromArray($arr)
+	protected function fromArray(array $arr)
 	{
 		$this->name 		= $arr['name'];
 		$this->artist 		= $arr['artist'];
@@ -111,18 +87,20 @@ class Track extends AbstractItem
 	public function getTags()
 	{
 		$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
-			
+		
+		$artist = is_array($this->artist) ? $this->artist['name'] : $this->artist;
+		
 		$methodVars = array(
-				'artist' => $this->artist,
+				'artist' => $artist,
 				'track'  => $this->name
 		);
-			
+		
 		if ($results = $trackClass->getTopTags($methodVars) ) {
 			$res = new TagList();
 			$res->fromArray($results);
 			return $res;
 		} else {
-			$this->error();
+			$this->error("error getting the top tags of " . $artist . " - " . $this->name . " from last.fm");
 		}
 	}
 	
@@ -140,9 +118,5 @@ class Track extends AbstractItem
 	public function getName()
 	{
 		return $this->name;
-	}
-	
-	public function getImage() {
-		return $this->image['large'];
 	}
 }

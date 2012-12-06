@@ -39,6 +39,16 @@ class Tag extends AbstractItem
 	 */
 	public function __construct(array $arr)
 	{
+		$this->auth 		= Auth::getAuth();
+		$this->apiClass 	= Auth::getApi();
+		$this->config		= Auth::getConfig();
+		
+		if($arr != null)
+			$this->fromArray($arr);
+	}
+	
+	protected function fromArray(array $arr)
+	{
 		$this->name 		= $arr['name'];
 		$this->count 		= $arr['count'];
 		$this->url 			= $arr['url'];
@@ -47,6 +57,28 @@ class Tag extends AbstractItem
 	public function equals($other)
 	{
 		return $other instanceof Track && $other->getName() == $this->getName();
+	}
+	
+	/**
+	 * Get the tag's top tracks
+	 * 
+	 * @return TrackList
+	 */
+	public function getTopTracks()
+	{
+		$trackClass = $this->apiClass->getPackage($this->auth, 'tag', $this->config);
+			
+		$methodVars = array(
+				'tag' => $this->getName()
+		);
+		
+		if ($results = $trackClass->getTopTags($methodVars) ) {
+			$res = new TrackList();
+			$res->fromArray($results);
+			return $res;
+		} else {
+			$this->error("no songs for this tag found");
+		}
 	}
 	
 	public function getName()

@@ -57,7 +57,7 @@ class DetailedTrack extends Track
 		}
 	}
 	
-	protected function fromArray($arr)
+	protected function fromArray(array $arr)
 	{
 		parent::fromArray($arr);
 		
