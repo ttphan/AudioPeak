@@ -28,6 +28,7 @@ body {
 	
 	border-right-width:7px;
 	border-left-width:7px;
+	border-style:solid;
 	-moz-border-image:url("../images/shad.png") 1 7 1 7 round; /* Firefox */
 	-webkit-border-image:url("../images/shad.png") 1 7 1 7 round; /* Safari */
 	-o-border-image:url("../images/shad.png") 1 7 1 7 round; /* Opera */
@@ -41,6 +42,7 @@ body {
 	margin-left:-19px;
 	
 	border-width:10px 26px 6px 26px;
+	border-style:solid;
 	-moz-border-image:url("../images/borderbalk.png") 10 26 6 26 round; /* Firefox */
 	-webkit-border-image:url("../images/borderbalk.png") 10 26 6 26 round; /* Safari */
 	-o-border-image:url("../images/borderbalk.png") 10 26 6 26 round; /* Opera */
@@ -67,6 +69,7 @@ img.grayscale {
 		
 	border-right-width:7px;
 	border-left-width:7px;
+	border-style:solid;
 	-moz-border-image:url("../images/shad.png") 1 7 1 7 round; /* Firefox */
 	-webkit-border-image:url("../images/shad.png") 1 7 1 7 round; /* Safari */
 	-o-border-image:url("../images/shad.png") 1 7 1 7 round; /* Opera */

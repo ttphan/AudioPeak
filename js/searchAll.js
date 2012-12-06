@@ -4,27 +4,49 @@ $(document).ready(function() {
 		// Enter key
 		if(e.keyCode == 13) {
 			var search = $("#searchAll").val();
-			searchAll(search);
+			searchLastfm(search);
 		}
 	});  
-
 });
 
 var YTplayerState = 0;
+var playing = 1;
+var playButton = '<img src="images/playbutton.png" width="15" height="15" alt="play">'
+var playNextButton = '<img src="images/playnextbutton.png" width="15" height="15" alt="playNext">'
+var playList = new Array();
 
-function searchAll(search) {
+function track(name,artist,image){
+	this.name=name;
+	this.artist=artist;
+	this.image=image;
+}
+
+//dit netter doen hoe??
+track.prototype.addID = function addID(id){
+	this.id=id;
+}
+
+track.prototype.toString = function trackToString() {
+  var res = this.name + "','" + this.artist + "','" + this.image;
+  return res;
+}
+
+function searchLastfm(search) {
 	//loader gif zolang ajax bezig is.
 	$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
+	$("#searchAll").val(search);
 	
-	//zoek gebruik makende van ajax.php welke een json object echo't.
+	//zoek gebruik makende van seachall_ajaxjson.php welke een json object echo't.
 	$.ajax({
 		type: "GET",
+//		url: "tests/seachAll_ajaxjson.php",
+//		data: "search="+search,
 		url: "php/ajax.php",
 		data: {search : search},
 		cache: false,
 		dataType: 'json',
 		success: function(json) {
-		  showResults(json);
+			showSearchResults(json);
 		},
     	error: function (xhr, ajaxOptions, thrownError) {
 			//TODO goed afhandelen.
@@ -33,26 +55,27 @@ function searchAll(search) {
 	});
 }
 
-function showResults(json){
+function showSearchResults(json){
 	//maak resulsdiv leeg
 	$('#ResultsDiv').html('');
 		
 	//haal vars uit json opject plaats deze in de resultsdiv met een span id van i. i wordt doorgegeven aan seachYT om daar de youtube play link te plaatsen
 	//ook de image var uit deze json wordt doorgegevn zodat showButton deze ook kan plaatsen
-	for (var i=0;i<json.length;i++) { 
-		var artist = json[i].artist_php;
-		var trackName = json[i].trackName_php;
-		var image = json[i].trackImage_php;
-		$('#ResultsDiv').append('<span id=\"' + i + '\" ></span> ' + artist + ' - ' + trackName + '<br>' );
-		var trackData = new Array();
-			trackData[0] = json[i].topTags_php;	
-		searchYT(artist, trackName, i, image, trackData)
+	window.numberResults = json.length; //door hem aan window vast te maken wordt ie global
+	for (var i=0;i<numberResults;i++) { 		
+		myTrack = new track(json[i].trackName_php,
+							json[i].artist_php,
+							json[i].trackImage_php
+							);
+							
+		$('#ResultsDiv').append('<span id=\"' + i + '\" ></span> ' + myTrack.artist + ' - ' + myTrack.name + '<br>' );
+		searchYT(myTrack, i)
 	}	
 }
 
-function searchYT(artist, trackName, i, image, trackData){	
+function searchYT(myTrack, i){	
 	//zoek string
-	var searchStr = artist + ' ' + trackName;
+	var searchStr = myTrack.artist + ' ' + myTrack.name;
 	/*	
 	 *	Requests a JSON-C feed from the GData.
 	 *
@@ -73,12 +96,12 @@ function searchYT(artist, trackName, i, image, trackData){
 			'&max-results=1' +
 			'&orderby=relevance' +
 			'&key=AI39si7Blv0HpIGbcHtzjaS70mFR-XEcomtJFHQcKC1-4yEthFsx4AhkMFldBeE_5UyD9jEEFCPMt2jzxDLF3hPT1SRoi1La4Q', function(data) {
-				showButton(data, i, image, artist, trackName, trackData);
+				showButtons(data, i, myTrack);
 			});				
 }
 
 // See https://developers.google.com/youtube/2.0/developers_guide_jsonc#Understanding_JSONC for the feed information
-function showButton(transport, j, image, artist, trackName, trackData) {
+function showButtons(transport, j, myTrack) {
 	var entries	= transport.data.items || [];
 	
 	if (entries[0] === undefined){
@@ -91,31 +114,33 @@ function showButton(transport, j, image, artist, trackName, trackData) {
 		
 		//plaats een play button als de ytplayer klaar is met afspelen	
 		if (YTplayerState == 0){
-			var button = '<a href = \"javascript:createVideo(\''+ id +'\',\''+ image +'\',\''+ artist +'\',\''+ trackName +'\',\''+ trackData + '\')\"><img src="images/playbutton.png" width="15" height="15" alt="play"></a>';
-			$('#'+j).append(' ' + button);
+			var button = '<a href=\"javascript:createVideo(\''+ id +'\',\''+ myTrack + '\')\">'+ playButton + '</a>';
+			$('#'+j).html(button);
 		}
 		//plaats een playnext button als e ytplayer nog aan het afspelen is
 		else {
-			var button = '<a href = \"javascript:playnext(\''+ id +'\',\''+ image +'\',\''+ artist +'\',\''+ trackName +'\',\''+ trackData + '\')\">playNEXT</a>';
-			$('#'+j).append(' ' + button);
+			var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack + '\')\">'+ playNextButton + '</a>';
+			$('#'+j).html(button);
 		}
 	}
 }
 
 //laat de video zien als er op lay wordt gedrukt, en plaats de image.
 //TODO eartist, trackName info en extra info laten zienvvvvv
-function createVideo(vidId, image, artist, trackName, trackData) {
-	if(image == ''){
+function createVideo(vidId, name,artist,image) {
+	currentTrack = new track(name,artist,image);
+
+	if(currentTrack.image == ''){
 		//zoek op Plasticman Cha Vocal die heeft geen afbeelding
 		$('#album').attr('src','images/albumgeen.jpg');
 		$('#huidigenummerbalk').attr('src','images/albumgeen.jpg');		
 	}
 	else{
-		$('#album').attr('src',image);
-		$('#huidigenummerbalk').attr('src',image);
+		$('#album').attr('src',currentTrack.image);
+		$('#huidigenummerbalk').attr('src',currentTrack.image);
 	}
-	$('#artist').html('<a href = \"javascript:searchAll(\'' + artist + '\')\">' + artist + '</a>');
-	$('#trackName').html(trackName);
+	$('#artist').html('<a href = \"javascript:searchLastfm(\'' + currentTrack.artist + '\')\">' + currentTrack.artist + '</a>');
+	$('#trackName').html(currentTrack.name);
 		
 	$('#playVideoDiv').flash({	
 			id: 'ytplayer',
@@ -125,16 +150,44 @@ function createVideo(vidId, image, artist, trackName, trackData) {
 			allowScriptAccess: 'always',
 		}
 	);	
+	
+	//maak van de playbuttons play next buttons er is nu tenslotte iets aan het spelen.	
+	for (var i=0;i<numberResults;i++) { 					
+		var buttonhtml = $('#'+i).html();
+		split = buttonhtml.split("'");
+		
+		var id = split[1];
+		myTrack = new track(split[3],split[5],split[7]);
+		
+		var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack + '\')\">'+ playNextButton + '</a>';
+		$('#'+i).html(button);
+	}
+	playing = 0;
+	
+	//TODO doe ajax request voor extra info en plaats deze.
 }
 
-//volgende nummer TODO
-function playnext(vidId, image) {	
-	if(image == ''){
+
+
+//volgende nummer
+function playNext(vidId, name,artist,image) {
+	endTrack = new track(name,artist,image,album);	
+	endTrack.addID(vidId);
+
+		
+	if(endTrack.image == ''){
 		$('#nieuwnummerbalk').attr('src','images/albumgeen.jpg');		
 	}
 	else{
-		$('#nieuwnummerbalk').attr('src',image);
+		$('#nieuwnummerbalk').attr('src',endTrack.image);
 	}
+	
+	//TODO 
+	console.log('ajax request met currentTRack,endTrack. TODO' + currentTrack + endTrack);
+		//make track object van filler + vidid
+	//playList.push(filler);
+	//playList.push(currentTrack);
+
 }
 
 //event listners voor YTplayerState zodat showButton weet of een een play of playnext knop geplaatst moet worden. 
@@ -153,4 +206,40 @@ function onYouTubePlayerReady(playerId) {
 */
 function onytplayerStateChange(newState) {
 	YTplayerState = newState;
+	console.log('newstate=' + newState + playing );
+	
+	if(newState == 0 && playing == 0){
+		for (var i=0;i<numberResults;i++) { 					
+			var buttonhtml = $('#'+i).html();
+			split = buttonhtml.split("'");
+			
+			var id = split[1];
+			myTrack = new track(split[3],split[5],split[7]);
+			
+			var button = '<a href=\"javascript:createVideo(\''+ id +'\',\''+ myTrack + '\')\">'+ playButton + '</a>';
+			$('#'+i).html(button);
+		}
+		playing = 1;
+		
+		//TODO TODO
+		if(endTrack != ''){
+			createVideo(endTrack.id, endTrack.name,endTrack.artist,endTrack.image);
+			//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
+			endTrack = '';
+			$('#nieuwnummerbalk').attr('src','images/albumnext.jpg');
+		}		
+	}
+	else if(newState == 1 && playing == 1){
+		for (var i=0;i<numberResults;i++) { 					
+			var buttonhtml = $('#'+i).html();
+			split = buttonhtml.split("'");
+			
+			var id = split[1];
+			myTrack = new track(split[3],split[5],split[7]);
+			
+			var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack + '\')\">'+ playNextButton + '</a>';
+			$('#'+i).html(button);
+		}
+		playing = 0;
+	}	
 }
