@@ -21,8 +21,6 @@ if(isset($_GET['query']))
 	
 	$resArray = array();
 	
-	//echo $res;
-	
 	foreach($res as $track) {
 		$array = array(
 				'artist_php' => $track->getArtist(),

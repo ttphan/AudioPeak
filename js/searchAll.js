@@ -16,11 +16,11 @@ function searchAll(search) {
 	//loader gif zolang ajax bezig is.
 	$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
 	
-	//zoek gebruik makende van kees.php welke een json object echo't.
+	//zoek gebruik makende van ajax.php welke een json object echo't.
 	$.ajax({
 		type: "GET",
-		url: "tests/seachAll_ajaxjson.php",
-		data: "search="+search,
+		url: "php/ajax.php",
+		data: {query : search},
 		cache: false,
 		dataType: 'json',
 		success: function(json) {
