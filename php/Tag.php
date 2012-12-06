@@ -32,6 +32,8 @@ class Tag extends AbstractItem
 	 */
 	protected $url = null;
 	
+	protected $trackLimit = 30;
+	
 	/**
 	 *  Class constructor
 	 *
@@ -69,10 +71,11 @@ class Tag extends AbstractItem
 		$trackClass = $this->apiClass->getPackage($this->auth, 'tag', $this->config);
 			
 		$methodVars = array(
-				'tag' => $this->getName()
+				'tag' => $this->getName(),
+				'limit' => $this->trackLimit
 		);
 		
-		if ($results = $trackClass->getTopTags($methodVars) ) {
+		if ($results = $trackClass->getTopTracks($methodVars) ) {
 			$res = new TrackList();
 			$res->fromArray($results);
 			return $res;

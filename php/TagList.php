@@ -139,4 +139,13 @@ class TagList extends AbstractList
 		
 		$this->error("error whilst finding a random tag");
 	}
+	
+	public function contains(Tag $tag) 
+	{
+		foreach($this as $test)
+			if($test->equals($tag))
+				return true;
+		
+		return false;
+	}
 }

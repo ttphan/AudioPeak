@@ -42,6 +42,7 @@ class FillerList extends TrackList
 	/**
 	 * 
 	 * @todo make it compute more than one filler
+	 * @todo cache that shit
 	 * @param Track $start
 	 * @param Track $end
 	 * @return Track|FillerList
@@ -51,12 +52,26 @@ class FillerList extends TrackList
 		if(!FillerList::hasOverlappingTags($start->getTags(), $end->getTags())) {
 			$rand = $start->getTags()->getRandom();
 			
-			foreach($rand->getTopTracks() as $testTrack)
-				if(FillerList::hasOverlappingTags($testTrack->getTags(), $end->getTags()))
+			echo $rand->getName() ."\n\n";
+			
+			$endTag = $end->getTags()->getRandom();
+			echo "\n\n";
+			
+			foreach($rand->getTopTracks() as $testTrack) {
+				echo "testing \"".$testTrack->getArtist()['name']." - ".$testTrack->getName()."\"";
+				if($testTrack->getTags()->contains($endTag))
 					$res = $testTrack;
+				else
+					echo " -> nope\n";
+			}
+			
+			if(!isset($res)) {
+				echo "no filler found";
+				//TODO: and find more fillers
+			}
 			
 		} else {
-			echo "no filler needed";
+			echo "\n no filler needed \n \n";
 		}
 		
 		return $res;
@@ -83,7 +98,14 @@ class FillerList extends TrackList
 	 */
 	public static function hasOverlappingTags(TagList $startTags, TagList $endTags)
 	{
-		$union = $startTags->union($endTags);
-		return $union->size() > 0;
+		$return = false;
+		foreach($startTags as $startTag) {
+			foreach($endTags as $endTag) {
+				if($startTag->getName() == $endTag->getName()) {
+					$return = true;
+				}
+			}
+		}
+		return $return;
 	}
 }
