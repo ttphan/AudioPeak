@@ -51,7 +51,7 @@ class Track extends AbstractItem
 	 *  @access protected
 	 *  @var array
 	 */
-	protected $image =  = null;
+	protected $image = null;
 	
 	/**
 	 *  Class constructor (with a workaround for overloading)
@@ -76,7 +76,14 @@ class Track extends AbstractItem
 		$this->streamable 	= (bool) $arr['streamable'];
 		$this->fulltrack 	= (bool) $arr['fulltrack'];
 		$this->listeners 	= $arr['listeners'];
-		$this->image 		= $arr['image'];
+		if(array_key_exists('image', $arr))
+		{
+			$this->image 		= $arr['image'];
+		}
+		else
+		{
+			$this->image		= $arr['album']['image'];
+		}
 	}
 	
 	/**
@@ -118,5 +125,13 @@ class Track extends AbstractItem
 	public function getName()
 	{
 		return $this->name;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getImage()
+	{
+		return $this->image;
 	}
 }

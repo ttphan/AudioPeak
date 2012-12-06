@@ -6,7 +6,7 @@ function getFiller() {
 	$.ajax({
 		type: "POST",
 		url: "ajax.php",
-		data: {start : startList, end: endList},
+		data: {getFillerStart : startList, getFillerEnd: endList},
 		success: function(result) {
 			     console.log(result);
 		}
@@ -20,8 +20,22 @@ function search() {
 	$.ajax({
 		type: "GET",
 		url: "ajax.php",
-		data: {query : searchStr},
+		data: {search : searchStr},
 		success: function(result) {
+			console.log(result);
+		}
+	});
+}
+
+// getInfo
+function getInfo() {
+	var track = ['Nirvana', 'Smells Like Teen Spirit'];
+	
+	$.ajax({
+		type: "GET",
+		url: "ajax.php",
+		data: {getInfo : track},
+		succes: function(result) {
 			console.log(result);
 		}
 	});

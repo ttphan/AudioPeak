@@ -32,6 +32,11 @@ class DetailedTrack extends Track
 	 */
 	protected $wiki;
 	
+	/**
+	 *  @var array
+	 */
+	protected $image;
+	
 	
 	/**
 	 *  Class constructor (with a workaround for overloading)
@@ -60,14 +65,38 @@ class DetailedTrack extends Track
 	protected function fromArray(array $arr)
 	{
 		parent::fromArray($arr);
-		
-		$this->id = $arr['array'];
+		$this->id = $arr['id'];
 		$this->duration = $arr['duration'];
 		$this->playcount = $arr['playcount'];
 		$this->artist = $arr['artist'];
 		$this->album = $arr['album'];
 		$this->toptags = $arr['toptags'];
 		$this->wiki = $arr['wiki'];
+		$this->image = $arr['album']['image'];
 		
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getWiki()
+	{
+		return $this->wiki;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getTopTags()
+	{
+		return $this->toptags;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getAlbum()
+	{
+		return $this->album;
 	}
 }

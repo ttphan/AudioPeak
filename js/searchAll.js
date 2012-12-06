@@ -20,7 +20,7 @@ function searchAll(search) {
 	$.ajax({
 		type: "GET",
 		url: "php/ajax.php",
-		data: {query : search},
+		data: {search : search},
 		cache: false,
 		dataType: 'json',
 		success: function(json) {
