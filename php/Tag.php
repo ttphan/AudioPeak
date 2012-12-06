@@ -9,7 +9,7 @@ class Tag extends AbstractItem
 	 * @access protected
 	 * @var string
 	 */
-	protected $name;
+	protected $name = null;
 	/**
 	 * the number occurences of this tag on last.fm
 	 *
@@ -30,7 +30,7 @@ class Tag extends AbstractItem
 	 * @access protected
 	 * @var string
 	 */
-	protected $url;
+	protected $url = null;
 	
 	/**
 	 *  Class constructor

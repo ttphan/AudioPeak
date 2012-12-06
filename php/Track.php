@@ -9,49 +9,49 @@ class Track extends AbstractItem
 	 *  @access protected
 	 *  @var string
 	 */
-	protected $name;
+	protected $name = null;
 	/**
 	 *  track artist name
 	 *
 	 *  @access protected
 	 *  @var string
 	 */
-	protected $artist;
+	protected $artist = null;
 	/**
 	 *  url of the last.fm page of this track
 	 *
 	 *  @access protected
 	 *  @var string
 	 */
-	protected $url;
+	protected $url = null;
 	/**
 	 *  track is streamable
 	 *
 	 *  @access protected
 	 *  @var string
 	 */
-	protected $streamable;
+	protected $streamable = null;
 	/**
 	 *  full track is available
 	 *
 	 *  @access protected
 	 *  @var boolean
 	 */
-	protected $fulltrack;
+	protected $fulltrack = null;
 	/**
 	 *  number of listeners on last.fm
 	 *
 	 *  @access protected
 	 *  @var int
 	 */
-	protected $listeners;
+	protected $listeners = null;
 	/**
 	 *  links to the image (small, medium, large)
 	 *
 	 *  @access protected
 	 *  @var array
 	 */
-	protected $image = array();
+	protected $image =  = null;
 	
 	/**
 	 *  Class constructor (with a workaround for overloading)
