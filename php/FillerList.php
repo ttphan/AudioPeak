@@ -51,11 +51,8 @@ class FillerList extends TrackList
 	{	
 		$res = null;
 		if(!FillerList::hasOverlappingTags($start->getTags(), $end->getTags())) {
-			$rand = $start->getTags()->getRandom();
-			echo $rand->getName() ."\n\n";
-			
+			$rand = $start->getTags()->getRandom();			
 			$endTag = $end->getTags()->getRandom();
-			echo $endTag->getName()."\n\n";
 			
 			foreach($rand->getTopTracks() as $testTrack) {
 				$artist = $testTrack->getArtist();
