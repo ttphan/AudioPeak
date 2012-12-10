@@ -75,8 +75,17 @@ class Track extends AbstractItem
 		$this->url 			= $arr['url'];
 		$this->streamable 	= (bool) $arr['streamable'];
 		$this->fulltrack 	= (bool) $arr['fulltrack'];
-		$this->listeners 	= $arr['listeners'];
-		$this->image 		= $arr['image'];
+		if(array_key_exists('listeners', $arr)) {
+			$this->listeners 	= $arr['listeners'];
+		}
+		if(array_key_exists('image', $arr))
+		{
+			$this->image     = $arr['image'];
+		}
+		else
+		{
+			$this->image    = $arr['album']['image'];
+		}		
 	}
 	
 	/**
@@ -118,5 +127,13 @@ class Track extends AbstractItem
 	public function getName()
 	{
 		return $this->name;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getImage()
+	{
+		return $this->image;
 	}
 }

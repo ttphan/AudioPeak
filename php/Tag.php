@@ -58,6 +58,9 @@ class Tag extends AbstractItem
 	
 	public function equals($other)
 	{
+		if($other->getName() != $this->getName()) {
+			echo $other->getName()."!=".$this->getName()."\n";
+		}
 		return $other instanceof Track && $other->getName() == $this->getName();
 	}
 	

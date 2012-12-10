@@ -48,24 +48,25 @@ class FillerList extends TrackList
 	 * @return Track|FillerList
 	 */
 	protected static function computeFiller($start, $end)
-	{
+	{	
+		$res = null;
 		if(!FillerList::hasOverlappingTags($start->getTags(), $end->getTags())) {
 			$rand = $start->getTags()->getRandom();
-			
 			echo $rand->getName() ."\n\n";
 			
 			$endTag = $end->getTags()->getRandom();
-			echo "\n\n";
+			echo $endTag->getName()."\n\n";
 			
 			foreach($rand->getTopTracks() as $testTrack) {
-				echo "testing \"".$testTrack->getArtist()['name']." - ".$testTrack->getName()."\"";
+				$artist = $testTrack->getArtist();
+				echo "testing \"".$artist['name']." - ".$testTrack->getName()."\"";
 				if($testTrack->getTags()->contains($endTag))
 					$res = $testTrack;
 				else
 					echo " -> nope\n";
 			}
 			
-			if(!isset($res)) {
+			if($res == null) {
 				echo "no filler found";
 				//TODO: and find more fillers
 			}
@@ -106,6 +107,7 @@ class FillerList extends TrackList
 				}
 			}
 		}
-		return $return;
+		//return $return;
+		return false;
 	}
 }

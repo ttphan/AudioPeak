@@ -130,7 +130,7 @@ class TagList extends AbstractList
 	public function getRandom()
 	{
 		$pin = mt_rand(0,100) / 100;
-		
+		$sum = 0;
 		foreach($this as $tag) {
 			$sum += $tag->getScaledCount();
 			if($pin <= $sum)
@@ -142,10 +142,11 @@ class TagList extends AbstractList
 	
 	public function contains(Tag $tag) 
 	{
-		foreach($this as $test)
+		foreach($this as $test) {
+			//echo $tag.getName()."\n";
 			if($test->equals($tag))
 				return true;
-		
+		}
 		return false;
 	}
 }

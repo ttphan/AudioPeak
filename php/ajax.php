@@ -4,6 +4,7 @@ require_once 'TrackList.php';
 require_once 'Tag.php';
 require_once 'TagList.php';
 require_once 'DetailedTrack.php';
+require_once 'FillerList.php';
 
 //  getFiller()
 if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
@@ -11,8 +12,9 @@ if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 	
 	$start = new DetailedTrack($_POST['getFillerStart'][0], $_POST['getFillerStart'][1]);
 	$end = new DetailedTrack($_POST['getFillerEnd'][0], $_POST['getFillerEnd'][1]);
+	$fList = new FillerList($start, $end);
 	
-	echo json_encode(array(	"Start" => array(
+	/*echo json_encode(array(	"Start" => array(
 										"Artist" => $start->getArtist(), 
 										"Track" => $start->getName(),
 										"Wiki" => $start->getWiki()
@@ -23,7 +25,8 @@ if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 										"Wiki" => $end->getWiki()
 									)
 					)
-		);
+		);*/
+	echo json_encode($fList->getFiller());
 }
 
 // search()
