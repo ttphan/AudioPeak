@@ -168,29 +168,44 @@ function createVideo(vidId, name,artist,image) {
 	//TODO doe ajax request voor extra info en plaats deze.
 }
 function createExtraInfo(name,artist) {
-	var getInfo = [artist,name];
+	
+		var track = [artist, name];
+		console.log(track);
+	
 	$.ajax({
 		type: "GET",
 		url: "php/ajax.php",
-		data: {getInfo : getInfo},
-		cache: false,
+		data: {getInfo : track},
 		dataType: 'json',
-		success: function(json) {
-			showExtraInfo(json);
-		},
-    	error: function (xhr, ajaxOptions, thrownError) {
-			//TODO goed afhandelen.
-			$('#ResultsDiv').html('Error: Mogelijk geen resultaten gevonden in Last.fm');
-      	}
+		succes: function(result) {
+			console.log('deze shit werkt');
+			//showExtraInfo(result);
+		}
 	});
+	
+	//var track = [artist, name];
+//	$.ajax({
+//		type: "GET",
+//		url: "php/ajax.php",
+//		data: {getInfo : track},
+//		cache: false,
+//		dataType: 'json',
+//		success: function(json) {
+//			console.log(json);
+//		},
+//    	error: function (xhr, ajaxOptions, thrownError) {
+//			//TODO goed afhandelen.
+//			$('#ResultsDiv').html('Error: Mogelijk geen resultaten gevonden in Last.fm');
+//      	}
+//	});
 }
 
 function showExtraInfo(json){
 	//maak resulsdiv leeg
-	$('#wikiSum').html('');
-	console.log(json);
+	$('#wikiSum').html('hoi');
+	console.log('json ding:' + json);
 	
-	$('#wikiSum').html(json.wikiding);	
+	$('#wikiSum').html(json['album'].wiki);	
 }
 
 

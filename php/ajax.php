@@ -90,7 +90,7 @@ if(isset($_GET['getInfo']))
 			'wiki' => $track->getWiki(),
 			'topTags' => $track->getTopTags()
 	);
-	json_encode($res);
+	echo json_encode($res);
 	
 }
 

@@ -130,10 +130,10 @@ class Track extends AbstractItem
 	}
 	
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function getImage()
 	{
-		return $this->image;
+		return $this->image['large'];
 	}
 }
