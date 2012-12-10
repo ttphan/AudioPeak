@@ -56,14 +56,6 @@ class Tag extends AbstractItem
 		$this->url 			= $arr['url'];
 	}
 	
-	public function equals($other)
-	{
-		if($other->getName() != $this->getName()) {
-			echo $other->getName()."!=".$this->getName()."\n";
-		}
-		return $other instanceof Track && $other->getName() == $this->getName();
-	}
-	
 	/**
 	 * Get the tag's top tracks
 	 * 

@@ -140,13 +140,14 @@ class TagList extends AbstractList
 		$this->error("error whilst finding a random tag");
 	}
 	
-	public function contains(Tag $tag) 
+	public function strippedList() 
 	{
-		foreach($this as $test) {
-			//echo $tag.getName()."\n";
-			if($test->equals($tag))
-				return true;
+		$array = null;
+		foreach($this as $tagObj) 
+		{
+			$array[] = $tagObj->getName();
 		}
-		return false;
+		return $array;
 	}
+
 }

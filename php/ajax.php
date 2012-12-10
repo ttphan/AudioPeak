@@ -26,7 +26,8 @@ if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 									)
 					)
 		);*/
-	echo json_encode($fList->getFiller());
+	print_r($fList->getFiller());
+	echo json_encode('asdf');
 }
 
 // search()
