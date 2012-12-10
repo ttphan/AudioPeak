@@ -1,4 +1,5 @@
 // JavaScript Document for HTML document traversing
+
 var YTplayerState = 0;
 var playing = 1;
 var playButton = '<img src="images/playbutton.png" width="15" height="15" alt="play">'
@@ -62,6 +63,7 @@ function createVideo(vidId, name,artist,image) {
 	}
 	$('#artist').html('<a href = \"javascript:searchLastfm(\'' + currentTrack.artist + '\')\">' + currentTrack.artist + '</a>');
 	$('#trackName').html(currentTrack.name);
+	//create extra info voor huidge nummer
 	createExtraInfo(name,artist);
 		
 	$('#playVideoDiv').flash({	
@@ -85,14 +87,10 @@ function createVideo(vidId, name,artist,image) {
 		$('#'+i).html(button);
 	}
 	playing = 0;
-	
-	//TODO doe ajax request voor extra info en plaats deze.
 }
 
 function showExtraInfo(json){
 	//maak resulsdiv leeg
-	$('#wikiSum').html('hoi');
-	console.log('json ding:' + json);
-	
-	$('#wikiSum').html(json['album'] + json['wiki']['summary']);	
+	$('#album').html(json['album']);
+	$('#wikiSum').html(json['wiki']['summary']);	
 }

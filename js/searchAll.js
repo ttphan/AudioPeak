@@ -9,16 +9,15 @@ $(document).ready(function() {
 	});  
 });
 
-
 var playList = new Array();
 
+//TRACK OBJECT
 function track(name,artist,image){
 	this.name=name;
 	this.artist=artist;
 	this.image=image;
 }
 
-//dit netter doen hoe??
 track.prototype.addID = function addID(id){
 	this.id=id;
 }
@@ -28,6 +27,7 @@ track.prototype.toString = function trackToString() {
   return res;
 }
 
+//FIRST SEARCH STUFF
 function searchLastfm(search) {
 	//loader gif zolang ajax bezig is.
 	$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
@@ -53,17 +53,7 @@ function searchLastfm(search) {
 function searchYT(myTrack, i){	
 	//zoek string
 	var searchStr = myTrack.artist + ' ' + myTrack.name;
-	/*	
-	 *	Requests a JSON-C feed from the GData.
-	 *
-	 *	Link paramters:
-	 *	&format=5: Show only embeddable videos
-	 *	&fmt=18: Show only HQ videos
-	 *	&max-results=8: Show a maximum of 8 results
-	 *	&orderby=relevance: Order the results by relevance
-	 *	&key=[KEY]: Google Developer Key, to avoid the public quota, compared to anonymous requests
-	 *
-	 */
+
 	//gebruik json om te zoeken en geef deze data door aan showButton met i en image.
 	$.getJSON('https://gdata.youtube.com/feeds/api/videos?v=2' +
 			'&alt=jsonc&q=' +
@@ -77,50 +67,59 @@ function searchYT(myTrack, i){
 			});				
 }
 
+//NOG NIET GETEST! mytrack.addYTid();
+track.prototype.addYTid = function addYTid(){
+	//zoek string
+	var searchStr = this.artist + ' ' + this.name;
+
+	//gebruik json om te zoeken en geef deze data door aan showButton met i en image.
+	$.getJSON('https://gdata.youtube.com/feeds/api/videos?v=2' +
+			'&alt=jsonc&q=' +
+			searchStr + 
+			'&format=5' +
+			'&fmt=18' +
+			'&max-results=1' +
+			'&orderby=relevance' +
+			'&key=AI39si7Blv0HpIGbcHtzjaS70mFR-XEcomtJFHQcKC1-4yEthFsx4AhkMFldBeE_5UyD9jEEFCPMt2jzxDLF3hPT1SRoi1La4Q', function(transport) {		
+				var entries	= transport.data.items || [];
+				var id = entries[0].id;
+				console.log('taaaart'+ id);
+				filler.addID(id);		
+					if(filler.image == ''){
+		//zoek op Plasticman Cha Vocal die heeft geen afbeelding
+
+		$('#filler1').attr('src','images/albumgeen.jpg');		
+	}
+	else{
+
+		$('#filler1').attr('src',filler.image);
+	}		
+		
+			});		
+}
 
 function createExtraInfo(name,artist) {
+	$('#wikiSum').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
 	
-		var track = [artist, name];
-		console.log(track);
-	
-//	$.ajax({
-//		type: "GET",
-//		url: "php/ajax.php",
-//		data: {getInfo : track},
-////		dataType: 'json',
-//		succes: function(result) {
-//			console.log('deze shit werkt');
-//			//showExtraInfo(result);
-//		}
-//	});
+	var track = [artist, name];
 	
 	$.ajax({
 		type: "GET",
-//		url: "tests/seachAll_ajaxjson.php",
-//		data: "search="+search,
 		url: "php/ajax.php",
 		data: {getInfo : track},
 		cache: false,
 		dataType: 'json',
 		success: function(json) {
 			showExtraInfo(json);
-		},
-    	error: function (xhr, ajaxOptions, thrownError) {
-			//TODO goed afhandelen.
-			$('#ResultsDiv').html('Error: Mogelijk geen resultaten gevonden in Last.fm');
-      	}
+		}
 	});
 }
-
-
-
 
 //volgende nummer
 function playNext(vidId, name,artist,image) {
 	endTrack = new track(name,artist,image,album);	
 	endTrack.addID(vidId);
-
-		
+	
 	if(endTrack.image == ''){
 		$('#nieuwnummerbalk').attr('src','images/albumgeen.jpg');		
 	}
@@ -130,9 +129,13 @@ function playNext(vidId, name,artist,image) {
 	
 	//TODO 
 	console.log('ajax request met currentTRack,endTrack. TODO' + currentTrack + endTrack);
-		//make track object van filler + vidid
+	filler = new track('Smells Like Teen Spirit','Nirvana',"http:\/\/userserve-ak.last.fm\/serve\/126\/83456717.png")
+	filler.addYTid();
+	console.log(filler);
+	//vraag vid id van filler op
+	//make track object van filler + vidid
 	//playList.push(filler);
-	//playList.push(currentTrack);
+
 
 }
 
@@ -168,11 +171,24 @@ function onytplayerStateChange(newState) {
 		playing = 1;
 		
 		//TODO TODO
+
 		if(endTrack != ''){
+							if(filler != ''){
+			createVideo(endTrack.id, filler.name,filler.artist,filler.image);
+			//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
+			filler = '';
+			$('#filler1').attr('src','images/emty.jpg');
+			createExtraInfo(filler.name,filler.artist);
+			filler = '';
+		}
+		else{
 			createVideo(endTrack.id, endTrack.name,endTrack.artist,endTrack.image);
 			//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
 			endTrack = '';
 			$('#nieuwnummerbalk').attr('src','images/albumnext.jpg');
+			createExtraInfo(endTrack.name,endTrack.artist);
+			endTrack = '';
+		}
 		}		
 	}
 	else if(newState == 1 && playing == 1){
