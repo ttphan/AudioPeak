@@ -141,6 +141,7 @@ function createVideo(vidId, name,artist,image) {
 	}
 	$('#artist').html('<a href = \"javascript:searchLastfm(\'' + currentTrack.artist + '\')\">' + currentTrack.artist + '</a>');
 	$('#trackName').html(currentTrack.name);
+	createExtraInfo(name,artist);
 		
 	$('#playVideoDiv').flash({	
 			id: 'ytplayer',
@@ -166,7 +167,31 @@ function createVideo(vidId, name,artist,image) {
 	
 	//TODO doe ajax request voor extra info en plaats deze.
 }
+function createExtraInfo(name,artist) {
+	var getInfo = [artist,name];
+	$.ajax({
+		type: "GET",
+		url: "php/ajax.php",
+		data: {getInfo : getInfo},
+		cache: false,
+		dataType: 'json',
+		success: function(json) {
+			showExtraInfo(json);
+		},
+    	error: function (xhr, ajaxOptions, thrownError) {
+			//TODO goed afhandelen.
+			$('#ResultsDiv').html('Error: Mogelijk geen resultaten gevonden in Last.fm');
+      	}
+	});
+}
 
+function showExtraInfo(json){
+	//maak resulsdiv leeg
+	$('#wikiSum').html('');
+	console.log(json);
+	
+	$('#wikiSum').html(json.wikiding);	
+}
 
 
 //volgende nummer
