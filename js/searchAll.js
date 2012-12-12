@@ -23,8 +23,8 @@ track.prototype.addID = function addID(id){
 }
 
 track.prototype.toString = function trackToString() {
-  var res = this.name + "','" + this.artist + "','" + this.image;
-  return res;
+	var res = this.name + "','" + this.artist + "','" + this.image;
+	return res;
 }
 
 //FIRST SEARCH STUFF
