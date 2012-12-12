@@ -6,7 +6,17 @@ $(document).ready(function() {
 			var search = $("#searchAll").val();
 			searchLastfm(search);
 		}
-	});  
+	});
+	
+	$("#huidigenummerbalk").click(function() {
+			$("#searchAll").focus();
+			$("#searchAll").select();
+	});
+	
+	$("#nieuwnummerbalk").click(function() {
+                $("#searchAll").focus();
+                $("#searchAll").select();
+	}); 
 });
 
 var fillerList = new Array();
