@@ -1,10 +1,6 @@
 <?php
 require_once 'AbstractList.php';
 
-/**
- *  track objects of this class are iterable in a foreach loop
- *  thank IteratorAggregate for this
- */
 class TagList extends AbstractList
 {
 	/**
@@ -59,6 +55,20 @@ class TagList extends AbstractList
 			{
 				$scaled = $tag->getCount() / $sum;
 				$tag->setScaledCount($scaled);
+			}
+		}
+	}
+	
+	/**
+	 *  expand this list with splitted tags
+	 */
+	public function expand() 
+	{
+		foreach($this as $tag) {
+			if($chunks = $tag->split()) {
+				foreach($chunks as $chunk) {
+					$this->add($chunk);
+				}
 			}
 		}
 	}

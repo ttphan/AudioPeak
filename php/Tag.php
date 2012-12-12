@@ -1,5 +1,6 @@
 <?php
 require_once 'AbstractItem.php';
+require_once 'TagList.php';
 
 class Tag extends AbstractItem
 {
@@ -62,6 +63,28 @@ class Tag extends AbstractItem
 			echo $other->getName()."!=".$this->getName()."\n";
 		}
 		return $other instanceof Track && $other->getName() == $this->getName();
+	}
+	
+	/**
+	 * split this tag into more tags
+	 * 
+	 * @return TagList|void
+	 */
+	public function split() 
+	{
+		$nameChuncks = explode($this->name(), " ");
+		if(sizeof($nameChuncks) > 1) {
+			$res = new TagList();
+			foreach($nameChuncks as $nameChunk) {
+				$newTag = new Tag(array(
+						'name' => $nameChunck,
+						'count' => $this->count / sizeof($nameChuncks),
+						'url' => $this->url
+						));
+				$res->add($newTag);
+			}
+			return $res;
+		}
 	}
 	
 	/**
