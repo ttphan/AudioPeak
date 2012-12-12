@@ -9,7 +9,7 @@ $(document).ready(function() {
 	});  
 });
 
-var playList = new Array();
+var fillerList = new Array();
 
 //TRACK OBJECT
 function track(name,artist,image){
@@ -132,6 +132,7 @@ function playNext(vidId, name,artist,image) {
 	filler = new track('Smells Like Teen Spirit','Nirvana',"http:\/\/userserve-ak.last.fm\/serve\/126\/83456717.png")
 	filler.addYTid();
 	console.log(filler);
+	fillerList.push(filler);
 	//vraag vid id van filler op
 	//make track object van filler + vidid
 	//playList.push(filler);
@@ -173,22 +174,31 @@ function onytplayerStateChange(newState) {
 		//TODO TODO
 
 		if(endTrack != ''){
-							if(filler != ''){
-			createVideo(endTrack.id, filler.name,filler.artist,filler.image);
-			//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
-			filler = '';
-			$('#filler1').attr('src','images/emty.jpg');
-			createExtraInfo(filler.name,filler.artist);
-			filler = '';
-		}
-		else{
-			createVideo(endTrack.id, endTrack.name,endTrack.artist,endTrack.image);
-			//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
-			endTrack = '';
-			$('#nieuwnummerbalk').attr('src','images/albumnext.jpg');
-			createExtraInfo(endTrack.name,endTrack.artist);
-			endTrack = '';
-		}
+//			if(filler != ''){
+//				createVideo(endTrack.id, filler.name,filler.artist,filler.image);
+//				//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
+//				filler = '';
+//				$('#filler1').attr('src','images/emty.jpg');
+//				createExtraInfo(filler.name,filler.artist);
+//				filler = '';
+//			}
+			if(fillerList != ''){
+				//fillerList[0]
+				createVideo(endTrack.id, filler.name,filler.artist,filler.image);
+				//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
+				filler = '';
+				$('#filler1').attr('src','images/emty.jpg');
+				createExtraInfo(filler.name,filler.artist);
+				filler = '';
+			}
+			else {
+				createVideo(endTrack.id, endTrack.name,endTrack.artist,endTrack.image);
+				//maak next track leeg en vervang nextimage ed. maak de functies hiervoor herbruikbaar.
+				endTrack = '';
+				$('#nieuwnummerbalk').attr('src','images/albumnext.jpg');
+				createExtraInfo(endTrack.name,endTrack.artist);
+				endTrack = '';
+			}
 		}		
 	}
 	else if(newState == 1 && playing == 1){
