@@ -44,7 +44,6 @@ class DetailedTrack extends Track
 		parent::__construct();
 		
 		$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
-			
 		$methodVars = array(
 				'artist' => $artist,
 				'track'  => $title

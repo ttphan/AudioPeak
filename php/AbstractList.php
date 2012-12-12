@@ -115,6 +115,11 @@ abstract class AbstractList implements IteratorAggregate
 		$count = 0;
 	}
 	
+	/**
+	 * @todo finish this
+	 * @param Item $item
+	 * @return boolean
+	 */
 	public function exists(Item $item)
 	{
 		foreach($this as $temp) {

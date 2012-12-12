@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once 'AbstractItem.php';
 
@@ -104,4 +105,143 @@ class Tag extends AbstractItem
 		return $this->url;
 	}
 
+=======
+<?php
+require_once 'AbstractItem.php';
+require_once 'TagList.php';
+
+class Tag extends AbstractItem
+{
+	/**
+	 * tag name
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $name = null;
+	/**
+	 * the number occurences of this tag on last.fm
+	 *
+	 * @access protected
+	 * @var int
+	 */
+	protected $count = 0;
+	/**
+	 * the scaled count to [0 .. 1]
+	 *
+	 * @access protected
+	 * @var decimal
+	 */
+	protected $scaledCount;
+	/**
+	 * url to the last.fm tag page
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $url = null;
+	
+	protected $trackLimit = 30;
+	
+	/**
+	 *  Class constructor
+	 *
+	 *  @param array $arr array with last.fm api track data
+	 */
+	public function __construct(array $arr)
+	{
+		$this->auth 		= Auth::getAuth();
+		$this->apiClass 	= Auth::getApi();
+		$this->config		= Auth::getConfig();
+		
+		if($arr != null)
+			$this->fromArray($arr);
+	}
+	
+	protected function fromArray(array $arr)
+	{
+		$this->name 		= $arr['name'];
+		$this->count 		= $arr['count'];
+		$this->url 			= $arr['url'];
+	}
+	
+	public function equals($other)
+	{
+		if($other->getName() != $this->getName()) {
+			echo $other->getName()."!=".$this->getName()."\n";
+		}
+		return $other instanceof Track && $other->getName() == $this->getName();
+	}
+	
+	/**
+	 * split this tag into more tags
+	 * 
+	 * @return TagList|void
+	 */
+	public function split() 
+	{
+		$nameChuncks = explode($this->name(), " ");
+		if(sizeof($nameChuncks) > 1) {
+			$res = new TagList();
+			foreach($nameChuncks as $nameChunk) {
+				$newTag = new Tag(array(
+						'name' => $nameChunck,
+						'count' => $this->count / sizeof($nameChuncks),
+						'url' => $this->url
+						));
+				$res->add($newTag);
+			}
+			return $res;
+		}
+	}
+	
+	/**
+	 * Get the tag's top tracks
+	 * 
+	 * @return TrackList
+	 */
+	public function getTopTracks()
+	{
+		$trackClass = $this->apiClass->getPackage($this->auth, 'tag', $this->config);
+			
+		$methodVars = array(
+				'tag' => $this->getName(),
+				'limit' => $this->trackLimit
+		);
+		
+		if ($results = $trackClass->getTopTracks($methodVars) ) {
+			$res = new TrackList();
+			$res->fromArray($results);
+			return $res;
+		} else {
+			$this->error("no songs for this tag found");
+		}
+	}
+	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
+	public function getCount()
+	{
+		return $this->count;
+	}
+	
+	public function getScaledCount()
+	{
+		return $this->scaledCount;
+	}
+	
+	public function setScaledCount($c)
+	{
+		$this->scaledCount = $c;
+	}
+	
+	public function getUrl()
+	{
+		return $this->url;
+	}
+
+>>>>>>> 06bbdaca6e1550f2ea4c3472721436c6f1e0bf24
 }

@@ -13,21 +13,22 @@ if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 	$start = new DetailedTrack($_POST['getFillerStart'][0], $_POST['getFillerStart'][1]);
 	$end = new DetailedTrack($_POST['getFillerEnd'][0], $_POST['getFillerEnd'][1]);
 	$fList = new FillerList($start, $end);
+
+	$list = $fList->getFiller();
+	$res = array();
 	
-	/*echo json_encode(array(	"Start" => array(
-										"Artist" => $start->getArtist(), 
-										"Track" => $start->getName(),
-										"Wiki" => $start->getWiki()
-										), 
-							"End" => array(
-										"Artist" => $end->getArtist(), 
-										"End" =>$end->getName(),
-										"Wiki" => $end->getWiki()
-									)
-					)
-		);*/
-	print_r($fList->getFiller());
-	echo json_encode('asdf');
+	foreach($list as $track) {
+		$artist = $track->getArtist();	
+		$res[] = array(
+					'artist' => $artist['name'], 
+					'title' => $track->getName(),
+					'wiki' => $track->getWiki(),
+					'album' => $track->getAlbum(),
+					'image' => $track->getImage(),
+					'topTags' => $track->getTopTags()
+				);
+	}
+	echo json_encode($res);
 }
 
 // search()

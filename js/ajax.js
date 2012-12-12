@@ -1,7 +1,7 @@
 // The array consists of [startArtist, startTitle, endArtist, endTitle]
 function getFiller() {
 	var startList = ['Nirvana', 'Smells Like Teen Spirit'];
-	var endList = ['Foo Fighters', 'Rope'];
+	var endList = ['Lady Gaga', 'Poker Face'];
 	
 	$.ajax({
 		type: "POST",
