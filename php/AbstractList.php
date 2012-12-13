@@ -16,10 +16,10 @@ abstract class AbstractList implements IteratorAggregate
 	/**
 	 *  the number of items
 	 *
-	 *  @access private
+	 *  @access protected
 	 *  @var int
 	*/
-	private $count = 0;
+	protected $count = 0;
 	
 	/**
 	 *  the number of results to be returned

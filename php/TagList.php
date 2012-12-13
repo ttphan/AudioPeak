@@ -71,6 +71,7 @@ class TagList extends AbstractList
 		foreach($this as $subject) {
 			$this->merge($subject->getSplit());
 		}
+		$this->filter();
 	}
 	
 	/**
@@ -213,13 +214,34 @@ class TagList extends AbstractList
 		$key = $this->getKey($tagName);
 		if($key != -1) {
 			array_splice($this->items, $key, $key-1);
+			$this->count--;
 		}
 	}
 	
-	public function filter(array $filterlist)
+	/**
+	 * remove the values according to the filterlist
+	 * @param array $filterlist
+	 */
+	public function applyFilter(array $filterlist)
 	{
 		foreach($filterlist as $filtertag)
 			$this->remove($filtertag);
 		
+	}
+	
+	/**
+	 *  remove the tags from the tagFilter file
+	 */
+	public function filter()
+	{
+		$file = 'tagFilter.txt';
+		
+		if(file_exists($file)) {
+			$input = fopen($file, 'r');
+			$raw = fread($input, filesize($file));
+			$data = explode(',', $raw);
+			
+			$this->applyFilter($data);
+		}
 	}
 }

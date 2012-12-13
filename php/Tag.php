@@ -64,7 +64,7 @@ class Tag extends AbstractItem
 	 */
 	public function getSplit()
 	{
-		$chunks = explode(' ', $this->name);
+		$chunks = array_merge( explode(' ', $this->name), explode('-', $this->name));
 		$res = new TagList();
 		if(sizeof($chunks) > 1) {
 			foreach($chunks as $chunk) {
