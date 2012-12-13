@@ -13,13 +13,6 @@ abstract class AbstractList implements IteratorAggregate
 	 *  @var array
 	 */
 	protected $items = array();
-	/**
-	 *  the number of items
-	 *
-	 *  @access protected
-	 *  @var int
-	*/
-	protected $count = 0;
 	
 	/**
 	 *  the number of results to be returned
@@ -92,7 +85,7 @@ abstract class AbstractList implements IteratorAggregate
 	 */
 	public function size()
 	{
-		return $this->count;
+		return sizeof($this->items);
 	}
 	
 	/**

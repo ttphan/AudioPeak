@@ -179,7 +179,7 @@ class TagList extends AbstractList
 		foreach($that as $new) {
 			$key = $this->getKey($new->getName());
 			
-			if($key == -1)
+			if($key == -1) // tag doesnt exists yet
 				$this->add($new);
 			else {
 				$double = &$this->items[$key]; //hell yeah pointers!
@@ -214,7 +214,6 @@ class TagList extends AbstractList
 		$key = $this->getKey($tagName);
 		if($key != -1) {
 			array_splice($this->items, $key, $key-1);
-			$this->count--;
 		}
 	}
 	
@@ -224,9 +223,9 @@ class TagList extends AbstractList
 	 */
 	public function applyFilter(array $filterlist)
 	{
-		foreach($filterlist as $filtertag)
+		foreach($filterlist as $filtertag) {
 			$this->remove($filtertag);
-		
+		}
 	}
 	
 	/**
