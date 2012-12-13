@@ -63,6 +63,20 @@ class TagList extends AbstractList
 		}
 	}
 	
+	/**
+	 * expand this list with splitted tags
+	 */
+	public function expand()
+	{
+		foreach($this as $subject) {
+			$this->merge($subject->getSplit());
+		}
+	}
+	
+	/**
+	 * 
+	 * @return number
+	 */
 	private function getSumCount()
 	{
 		$sum = 0;
@@ -140,13 +154,45 @@ class TagList extends AbstractList
 		$this->error("error whilst finding a random tag");
 	}
 	
+	/**
+	 * 
+	 * @return array
+	 */
 	public function strippedList() 
 	{
-		$array = null;
+		$array = array();
 		foreach($this as $tagObj) 
 		{
 			$array[] = $tagObj->getName();
 		}
 		return $array;
 	}
+	
+	/**
+	 * Add all the tags from $that to $this
+	 * 
+	 * @param TagList $that
+	 */
+	protected function merge(TagList $that)
+	{
+		foreach($that as $new)
+			if(!$this->nameExists($new->getName()))
+				$this->add($new);
+		
+	}
+	
+	/**
+	 * check if tagName exists in here
+	 * 
+	 * @param string $tagName
+	 * @return boolean
+	 */
+	public function nameExists($tagName) 
+	{
+		foreach($this as $tag)
+			if($tag->getName() === $tagName)
+				return true;
+		
+		return false;
+	} 
 }

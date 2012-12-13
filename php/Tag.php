@@ -57,6 +57,28 @@ class Tag extends AbstractItem
 	}
 	
 	/**
+	 * Split this tag into multiple tags based on 
+	 * individual words
+	 * 
+	 * @return TagList
+	 */
+	public function getSplit()
+	{
+		$chunks = explode(' ', $this->name);
+		$res = new TagList();
+		if(sizeof($chunks) > 1) {
+			foreach($chunks as $chunk) {
+				$res->add(new Tag(array(
+						'name'  => $chunk, 
+						'count' => round($this->count / sizeof($chunks)), 
+						'url'   => $this->url)));
+			}
+		}
+		
+		return $res;
+	}
+	
+	/**
 	 * Get the tag's top tracks
 	 * 
 	 * @return TrackList
