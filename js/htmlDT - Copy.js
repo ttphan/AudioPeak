@@ -1,7 +1,7 @@
 // JavaScript Document for HTML document traversing
 
 var YTplayerState = 0;
-//var Playing = 1;
+var Playing = 1;
 var playButton = '<img src="images/playbutton.png" width="15" height="15" alt="play">'
 var playNextButton = '<img src="images/playnextbutton.png" width="15" height="15" alt="playNext">'
 
@@ -35,7 +35,7 @@ function showButtons(transport, j, myTrack) {
 		var id = entries[0].id;
 		
 		//plaats een play button als de ytplayer klaar is met afspelen	
-		if (playing == 0){
+		if (YTplayerState == 0 || YTplayerState == 2){
 			var button = '<a href=\"javascript:createVideo(\''+ id +'\',\''+ myTrack.MytoString() + '\')\">'+ playButton + '</a>';
 			$('#'+j).html(button);
 		}
@@ -74,9 +74,10 @@ function createVideo(vidId, name,artist,image) {
 			allowScriptAccess: 'always',
 		}
 	);	
+	playList.push(currentTrack);
 	
 	
-/*	//maak van de playbuttons play next buttons er is nu tenslotte iets aan het spelen.	
+	//maak van de playbuttons play next buttons er is nu tenslotte iets aan het spelen.	
 	for (var i=0;i<numberResults;i++) { 					
 		var buttonhtml = $('#'+i).html();
 		split = buttonhtml.split("'");
@@ -87,18 +88,11 @@ function createVideo(vidId, name,artist,image) {
 		var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack.MytoString() + '\')\">'+ playNextButton + '</a>';
 		$('#'+i).html(button);
 	}
-	//Playing = 0;*/
+	Playing = 0;
 }
 
 function showExtraInfo(json){
 	//maak resulsdiv leeg
 	$('#album').html(json['album']);
 	$('#wikiSum').html(json['wiki']['summary']);	
-}
-
-function showPlayList(){
-	$('#balk').html('');
-	for (var i=0;i<playList.length;i++) { 
-		$('#balk').append('<img src=\"' + playList[i].image + '\" alt="alubmimg"/>');		
-	}
 }
