@@ -175,24 +175,51 @@ class TagList extends AbstractList
 	 */
 	protected function merge(TagList $that)
 	{
-		foreach($that as $new)
-			if(!$this->nameExists($new->getName()))
+		foreach($that as $new) {
+			$key = $this->getKey($new->getName());
+			
+			if($key == -1)
 				$this->add($new);
-		
+			else {
+				$double = &$this->items[$key]; //hell yeah pointers!
+				$double->setCount($new->getCount() + $double->getCount());
+			}
+		}
 	}
 	
 	/**
-	 * check if tagName exists in here
+	 * get the key of the tagname if present
+	 * else it returns -1
 	 * 
 	 * @param string $tagName
-	 * @return boolean
+	 * @return int
 	 */
-	public function nameExists($tagName) 
+	public function getKey($tagName) 
 	{
-		foreach($this as $tag)
+		foreach($this as $key => $tag)
 			if($tag->getName() === $tagName)
-				return true;
+				return $key;
 		
-		return false;
-	} 
+		return -1;
+	}
+	
+	/**
+	 * removes the tag with that tagname
+	 * 
+	 * @param string $tagName
+	 */
+	public function remove($tagName)
+	{
+		$key = $this->getKey($tagName);
+		if($key != -1) {
+			array_splice($this->items, $key, $key-1);
+		}
+	}
+	
+	public function filter(array $filterlist)
+	{
+		foreach($filterlist as $filtertag)
+			$this->remove($filtertag);
+		
+	}
 }

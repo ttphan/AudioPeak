@@ -111,6 +111,11 @@ class Tag extends AbstractItem
 		return $this->count;
 	}
 	
+	public function setCount($val)
+	{
+		$this->count = $val;
+	}
+	
 	public function getScaledCount()
 	{
 		return $this->scaledCount;

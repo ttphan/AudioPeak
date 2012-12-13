@@ -9,10 +9,10 @@ abstract class AbstractList implements IteratorAggregate
 	/**
 	 *  Store all the abstract item objects
 	 *
-	 *  @access private
+	 *  @access protected
 	 *  @var array
 	 */
-	private $items = array();
+	protected $items = array();
 	/**
 	 *  the number of items
 	 *
