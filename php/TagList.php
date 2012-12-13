@@ -72,6 +72,7 @@ class TagList extends AbstractList
 			$this->merge($subject->getSplit());
 		}
 		$this->filter();
+		$this->scaleCounts();
 	}
 	
 	/**
@@ -213,7 +214,7 @@ class TagList extends AbstractList
 	{
 		$key = $this->getKey($tagName);
 		if($key != -1) {
-			array_splice($this->items, $key, $key-1);
+			array_splice($this->items, $key, 1);
 		}
 	}
 	
