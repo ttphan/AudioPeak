@@ -37,9 +37,12 @@ body {
 
 #balk {
 	width:890px;
+	height:144px;
 	background-color:#4ea6ea;
 	padding-left:10px;
 	margin-left:-19px;
+	overflow-y:hidden;
+	overflow-x:scroll;
 	
 	border-width:10px 26px 6px 26px;
 	border-style:solid;

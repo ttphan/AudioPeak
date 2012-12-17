@@ -1,4 +1,4 @@
-// JavaScript Document
+// JavaScript Document track.js
 //TRACK OBJECT
 function track(name,artist,image){
 	this.name=name;
