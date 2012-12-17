@@ -3,3 +3,4 @@ $ cat .gitignore
 .project
 .buildpath
 .settings*
+db/
