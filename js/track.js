@@ -12,7 +12,7 @@ track.prototype.addID = function addID(id){
 }
 
 track.prototype.MytoString = function trackMyToString() {
-	var res = this.name + "','" + this.artist + "','" + this.image;
+	var res = esc_quot(this.name) + "','" + esc_quot(this.artist) + "','" + this.image;
 	return res;
 }
 
@@ -46,4 +46,8 @@ track.prototype.addYTid = function addYTid(){
 					$('#filler1').attr('src',filler.image);
 				}		
 			});		
+}
+
+function esc_quot(text){
+	return text.split('\'').join('\\\'')
 }

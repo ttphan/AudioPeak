@@ -52,7 +52,7 @@ function createExtraInfo(name,artist) {
 
 function showExtraInfo(json){
 	//maak resulsdiv leeg
-	$('#album').html(json['album']);
+	$('#palbum').html(json['album']);
 	$('#wikiSum').html(json['wiki']['summary']);	
 }
 
