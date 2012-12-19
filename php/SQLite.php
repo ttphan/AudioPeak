@@ -5,7 +5,7 @@ class SQLite extends PDO
     
     public function __construct($db) 
     {	
-    	$this->database = $db;
+    	$this->database = '../db/'.$db;
     	parent::__construct('sqlite:'.$this->database);
     	parent::setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     }
