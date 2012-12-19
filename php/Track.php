@@ -1,5 +1,7 @@
 <?php
+require_once 'Database.php';
 require_once 'AbstractItem.php';
+
 
 class Track extends AbstractItem
 {
@@ -94,8 +96,21 @@ class Track extends AbstractItem
 	 * @return TagList
 	 */
 	public function getTags()
-	{
-		$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
+	{	
+		$dbase = new Database();
+		
+		$result = $dbase->getTags($this);
+	
+		if(is_array($result)) {
+			$res = new TagList();
+			$res->FromArray($result);
+			return $res;
+		}
+		else {
+			$this->error("error getting the top tags of " . $artist . " - " . $this->name . " from last.fm");
+		}
+		
+		/*$trackClass = $this->apiClass->getPackage($this->auth, 'track', $this->config);
 		
 		$artist = is_array($this->artist) ? $this->artist['name'] : $this->artist;
 		
@@ -110,7 +125,9 @@ class Track extends AbstractItem
 			return $res;
 		} else {
 			$this->error("error getting the top tags of " . $artist . " - " . $this->name . " from last.fm");
-		}
+		}*/
+		
+		
 	}
 	
 	/**

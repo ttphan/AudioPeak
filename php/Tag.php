@@ -30,7 +30,7 @@ class Tag extends AbstractItem
 	 * @access protected
 	 * @var string
 	 */
-	protected $url = null;
+	protected $url = '';
 	
 	protected $trackLimit = 30;
 	
@@ -53,7 +53,9 @@ class Tag extends AbstractItem
 	{
 		$this->name 		= $arr['name'];
 		$this->count 		= $arr['count'];
-		$this->url 			= $arr['url'];
+		if(array_key_exists('url', $arr)) {
+			$this->url 			= $arr['url'];
+		}
 	}
 	
 	/**
