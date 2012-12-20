@@ -61,14 +61,19 @@ class FillerList extends TrackList
 				$artist = $testTrack->getArtist();
 				$title = $testTrack->getName();
 				echo "testing \"".$artist['name']." - ".$title."\"";
-				$list = $testTrack->getTags()->strippedList();
-				//print_r($list);
-				if(in_array($endTag->getName(), $list)) {
-					$track = new DetailedTrack($artist['name'], $title);
-					$res[] = $track;
-				}
-				else
+				$temp = $testTrack->getTags();
+				if($temp === null) {
 					echo " -> nope\n";
+				}
+				else {
+					$list = $temp->strippedList();
+					if(in_array($endTag->getName(), $list)) {
+						$track = new DetailedTrack($artist['name'], $title);
+						$res[] = $track;
+					}
+					else
+						echo " -> nope\n";
+				}
 			}
 			
 			if($res == null) {

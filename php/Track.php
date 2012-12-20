@@ -98,9 +98,10 @@ class Track extends AbstractItem
 	public function getTags()
 	{	
 		$dbase = new Database();
-		
 		$result = $dbase->getTags($this);
-	
+		if($result === null) {
+			return null;
+		}
 		if(is_array($result)) {
 			$res = new TagList();
 			$res->FromArray($result);
