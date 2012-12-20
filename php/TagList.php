@@ -145,15 +145,17 @@ class TagList extends AbstractList
 	 */
 	public function getRandom()
 	{
-		$pin = mt_rand(0,100) / 100;
-		$sum = 0;
-		foreach($this as $tag) {
-			$sum += $tag->getScaledCount();
-			if($pin <= $sum)
-				return $tag;
+		if($this->size() > 0) {
+			$pin = mt_rand(0,100) / 100;
+			$sum = 0;
+			foreach($this as $tag) {
+				$sum += $tag->getScaledCount();
+				if($pin <= $sum)
+					return $tag;
+			}
+		} else {
+			$this->error("error whilst finding a random tag: taglist is empty");
 		}
-		
-		$this->error("error whilst finding a random tag");
 	}
 	
 	/**
