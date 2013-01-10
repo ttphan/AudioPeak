@@ -34,9 +34,18 @@ class FillerList extends TrackList
 	public function getFiller()
 	{
 		if(!isset($this->filler))
-			return FillerList::computeFiller($this->start, $this->end);
+			return FillerList::computeFiller2($this->start, $this->end);
 		else
 			return $this->filler;
+	}
+	
+	protected static function computeFiller2($startID,$endID)
+	{
+		$db = new MySQL();
+		$start = $db->getSong($startID);
+		$end = $db->getSong($endID);
+		
+		$candidates = $db->getSongs($start['tempo'],$end['tempo']);
 	}
 	
 	/**

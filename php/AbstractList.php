@@ -3,6 +3,7 @@ require_once 'lastfmapi/lastfmapi.php';
 require_once 'Track.php';
 require_once 'Tag.php';
 require_once 'Auth.php';
+require_once 'MySQL.php';
 
 abstract class AbstractList implements IteratorAggregate
 {

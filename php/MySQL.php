@@ -30,6 +30,12 @@ class MySQL
 		return $data;
 	}
 	
+	function getSong($id)
+	{
+		$result = $this->query("SELECT * FROM `tracks` WHERE `id` = '".$id."'");
+		return mysql_fetch_array($result, MYSQL_ASSOC);
+	}
+	
 /* 	function getSimilarIds($id) {
 		$result = $this->query("SELECT `target` FROM `similars_src` WHERE `tid` = '".$id."'");
 		$similars = mysql_fetch_array($result,MYSQL_ASSOC);
