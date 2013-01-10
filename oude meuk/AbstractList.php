@@ -21,7 +21,7 @@ abstract class AbstractList implements IteratorAggregate
 	 *  @access protected
 	 *  @var int
 	 */
-	protected $numResults = 20;
+	protected $numResults = 30;
 	
 	/**
 	 *  authentication object used for the api

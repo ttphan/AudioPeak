@@ -10,9 +10,23 @@ function playNext(vidId, name,artist,image) {
 		createVideo();
 	}
 	else{
-		filler = getFiller(playList[playList.length-1],myTrack);		
-		playList.push(filler);
-		playList.push(myTrack);
+		$.ajax({
+			type: "GET",
+			url: "php/ajax.php",
+			data: {getFillerStartTrack : playList[playList.length-1].name,
+					getFillerStartArtist : playList[playList.length-1].artist,
+					getFillerEndTrack : myTrack.name,
+					getFillerEndArtist : myTrack.artist},
+			cache: false,
+			dataType: 'json',
+			success: function(json) {
+				getFillerJSON(json);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				//TODO goed afhandelen.
+				$('#ResultsDiv').html('Error: Waarschijnlijk iets met php of de verbinden. Probeer opnieuw.');
+			}
+		});		
 	}
 	showPlayList();
 }
@@ -45,10 +59,24 @@ function onytplayerStateChange(newState) {
 	}
 }
 
-
-function getFiller(beginTrack,endTrack){
-	console.log(beginTrack + endTrack);
-	filler = new track('Smells Like Teen Spirit','Nirvana',"http:\/\/userserve-ak.last.fm\/serve\/126\/83456717.png");
+function getFillerJSON(json){
+	filler = new track(json.title,
+						json.artist,
+						json.image
+						);
 	filler.addYTid();	
-	return filler;
+	playList.push(filler);
+	playList.push(myTrack);
+	showPlayList();
+}
+
+function next() {
+	if(playList[1] == undefined){
+		console.log('GEEN NIEUWE VIDEO' + playList );
+	}
+	else{
+		playList.splice(0, 1);
+		createVideo();
+	}
+	showPlayList();
 }

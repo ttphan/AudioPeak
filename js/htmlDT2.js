@@ -54,6 +54,8 @@ function showExtraInfo(json){
 	//maak resulsdiv leeg
 	$('#palbum').html(json['album']);
 	$('#wikiSum').html(json['wiki']['summary']);	
+	
+	console.log(json['topTags']['0']['name']);
 }
 
 

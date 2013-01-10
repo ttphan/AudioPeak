@@ -52,36 +52,38 @@ class FillerList extends TrackList
 		$res = null;
 		if(!FillerList::hasOverlappingTags($start->getTags(), $end->getTags())) {
 			$rand = $start->getTags()->getRandom();
-			
+			echo $rand->getName() ."\n\n";
 			
 			$endTag = $end->getTags()->getRandom();
-		
+			echo $endTag->getName()."\n\n";
 			
 			foreach($rand->getTopTracks() as $testTrack) {
 				$artist = $testTrack->getArtist();
 				$title = $testTrack->getName();
-				
+				echo "testing \"".$artist['name']." - ".$title."\"";
 				$temp = $testTrack->getTags();
 				if($temp === null) {
-				
+					echo " -> nope\n";
 				}
 				else {
 					$list = $temp->strippedList();
 					if(in_array($endTag->getName(), $list)) {
 						$track = new DetailedTrack($artist['name'], $title);
 						$res[] = $track;
-					
+						echo " -> yes\n";
 					}
-
+					else
+						echo " -> nope\n";
 				}
 			}
 			
 			if($res == null) {
+				echo "no filler found";
 				//TODO: and find more fillers
 			}
 			
 		} else {
-			//TODO: and find more fillers
+			echo "\n no filler needed \n \n";
 		}
 		
 		return $res;

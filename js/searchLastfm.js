@@ -103,6 +103,7 @@ function showButtons(transport, j, myTrack) {
 		
 		var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack.MytoString() + '\')\">'+ playNextButton + '</a>';
 		$('#'+j).html(button);
+		
 	}
 }
 

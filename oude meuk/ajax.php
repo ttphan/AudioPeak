@@ -5,9 +5,8 @@ require_once 'Tag.php';
 require_once 'TagList.php';
 require_once 'DetailedTrack.php';
 require_once 'FillerList.php';
-require_once 'Database.php';
 
-/*  getFiller()
+//  getFiller()
 if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 {
 	
@@ -31,7 +30,7 @@ if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 	}
 	echo json_encode($res);
 }
-*/
+
 // search()
 if(isset($_GET['search'])) 
 {
@@ -95,37 +94,6 @@ if(isset($_GET['getInfo']))
 	);
 	echo json_encode($res);
 	
-}
-
-if(isset($_GET['getFillerEndArtist']))
-{
-	
-	$start = new DetailedTrack($_GET['getFillerStartArtist'], $_GET['getFillerStartTrack']);
-	$end = new DetailedTrack($_GET['getFillerEndArtist'], $_GET['getFillerEndTrack']);
-	$fList = new FillerList($start, $end);
-
-	for ($i = 1; $i <= 5; $i++) {
-    	$list = $fList->getFiller();
-		if(!is_null($list)){
-
-			break;
-		}
-	}
-	if(!is_null($list)){
-		foreach($list as $track) {
-			$artist = $track->getArtist();	
-			$res = array(
-						'artist' => $artist['name'], 
-						'title' => $track->getName(),
-						'image' => $track->getImage(),
-					);
-			break;
-		}
-	}
-	else{
-		echo json_encode('geen similar tracks gevonden, probeer een ander nummer ');
-	}
-	echo json_encode($res);
 }
 
 ?>
