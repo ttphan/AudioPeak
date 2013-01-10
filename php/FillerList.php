@@ -1,4 +1,5 @@
 <?php
+require_once 'TrackList.php';
 class FillerList extends TrackList 
 {
 	/**
@@ -39,13 +40,78 @@ class FillerList extends TrackList
 			return $this->filler;
 	}
 	
-	protected static function computeFiller2($startID,$endID)
+	public static function computeFiller2($startID,$endID)
 	{
 		$db = new MySQL();
 		$start = $db->getSong($startID);
 		$end = $db->getSong($endID);
 		
 		$candidates = $db->getSongs($start['tempo'],$end['tempo']);
+		$scores = array();
+		foreach($candidates as $candidate) {
+			if($candidate['id'] != $startID && $candidate['id'] != $endID) {
+				$leftDist = FillerList::getDistance($start, $candidate);
+				$rightDist = FillerList::getDistance($end, $candidate);
+				//echo $startID." <-".$leftDist."-> ".$candidate['id']." <-".$rightDist."-> ".$endID."\n";
+				
+				$diff = abs($leftDist-$rightDist);
+				$sum = $leftDist + $rightDist;
+				
+				$score = $diff + $sum;
+				$scores[$candidate['id']] = $score;
+			}
+		}
+		
+		$minIds = FillerList::minIds($scores);
+		
+		
+		echo sizeof($minIds)."/".sizeof($scores)." possible winrars \n";
+		
+		$rand = mt_rand(0,sizeof(minIds)-1);
+		$winrar = $minIds[$rand];
+		//print_r($scores);
+		return $winrar;
+	}
+	
+	protected static function minIds($arr)
+	{
+		$min = min($arr);
+		$minIds = array();
+		// get which are max
+		foreach($arr as $key => $val) {
+			if ($val == $min) {
+				$minIds[] = $key;
+			}
+		}
+		return $minIds;
+	}
+	
+	protected static function getDistance($track1, $track2)
+	{
+		$sum = 0;
+		$num = 3;
+		$sum += abs($track1['song_hotttnesss'] - $track2['song_hotttnesss']);
+		//var_dump($sum);
+		$sum += abs($track1['danceability'] - $track2['danceability']);
+		//var_dump($sum);
+		$sum += abs($track1['energy'] - $track2['energy']);
+		//var_dump($sum);
+		if($track1['year'] != 0 && $track2['year'] != 0) {
+			$sum += abs($track1['year'] - $track2['year']) / 100;
+			$num++;
+		}
+		//var_dump($sum);
+		if($track1['tempo'] != 0 && $track2['tempo'] != 0) {
+			$sum += abs($track1['tempo'] - $track2['tempo']) / 100;
+			$num++;
+		}
+		//var_dump($sum);
+		//echo "\n";
+		
+		if($sum == 0)
+			return PHP_INT_MAX;
+				
+		return $sum / $num;
 	}
 	
 	/**
