@@ -67,7 +67,7 @@ function showSearchResults(json){
 								json[i].trackImage_php
 								);
 								
-			$('#ResultsDiv').append('<span id=\"' + i + '\" ></span> ' + myTrack.artist + ' - ' + myTrack.name + '<br>' );
+			$('#ResultsDiv').append('<span id=\"l' + i + '\" ></span> ' + myTrack.artist + ' - ' + myTrack.name + '<br>' );
 			searchYT(myTrack, i)
 		}
 	}
@@ -100,9 +100,9 @@ function showButtons(transport, j, myTrack) {
 	else{
 		//haal de id van de video uit de transport data.
 		var id = entries[0].id;
-		
+
 		var button = '<a href = \"javascript:playNext(\''+ id +'\',\''+ myTrack.MytoString() + '\')\">'+ playNextButton + '</a>';
-		$('#'+j).html(button);
+		$('#l'+j).html(button);
 		
 	}
 }
