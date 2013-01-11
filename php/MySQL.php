@@ -35,10 +35,28 @@ class MySQL
 		return $data;
 	}
 	
-	function getSong($id)
+	function getSong($tid)
 	{
-		$result = $this->query("SELECT * FROM `tracks` WHERE `id` = '".$id."'");
+		$result = $this->query("SELECT * FROM `tracks` WHERE `tid` = '".$tid."'");
 		return mysql_fetch_array($result, MYSQL_ASSOC);
+	}
+	
+	function getSimilar($tid)
+	{
+		$query = "SELECT * FROM `similars_src` WHERE `tid` = '".$tid."'";
+		$result = $this->query($query);
+
+		$rawParts = explode(',',mysql_result($result, 0, 'target'));
+		$res = array();
+		for($i = 0; $i < sizeof($rawParts); $i = $i+2) {
+			$res[$rawParts[$i]] = floatval($rawParts[$i+1]);
+		}
+		return $res;
+	}
+	
+	public function exists($tid) 
+	{
+		return is_array($this->getSong($tid));
 	}
 	
 /* 	function getSimilarIds($id) {
