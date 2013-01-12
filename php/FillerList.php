@@ -22,9 +22,11 @@ class FillerList extends TrackList
 	 */
 	public function __construct(Track $start, Track $end)
 	{
+		$db = new MySQL();
+		
 		parent::__construct();
-		$this->start = $start;
-		$this->end = $end;
+		$this->start = $db->getTid($start);
+		$this->end = $db->getTid($end);
 	}
 	
 	/**
@@ -35,7 +37,7 @@ class FillerList extends TrackList
 	public function getFiller()
 	{
 		if(!isset($this->filler))
-			return FillerList::computeFiller2($this->start, $this->end);
+			return FillerList::computeFillers($this->start, $this->end);
 		else
 			return $this->filler;
 	}
@@ -50,8 +52,8 @@ class FillerList extends TrackList
 		
 		$res = array();
 		
-		print_r($start);
-		print_r($end);
+		//print_r($start);
+		//print_r($end);
 		
 		/*$numFillers = round(abs($start['tempo'] - $end['tempo']) / 20, 0, PHP_ROUND_HALF_UP);
 		if($start['tempo'] + $end['tempo'] == 0) {
@@ -113,6 +115,8 @@ class FillerList extends TrackList
 		$scores = array();
 		foreach($candidates as $candidate) {
 			if($candidate['tid'] != $start['tid'] && $candidate['tid'] != $end['tid']) {
+				$candidate['similar'] = $db->getSimilar($candidate['tid']);
+				
 				$candidate['tags'] = $db->getTags($candidate['tid']);
 				$leftDist = FillerList::getDistance($start, $candidate);
 				$rightDist = FillerList::getDistance($candidate, $end);
@@ -127,7 +131,7 @@ class FillerList extends TrackList
 		}
 
 		$minIds = FillerList::minIds($scores);
-		echo sizeof($minIds)."/".sizeof($scores)." possible winrars \n";
+		//echo sizeof($minIds)."/".sizeof($scores)." possible winrars \n";
 		
 		$rand = mt_rand(0,sizeof($minIds)-1);
 		$winrar = $minIds[$rand];
@@ -165,17 +169,16 @@ class FillerList extends TrackList
 		$properties['hotttnesss']	= abs($track1['song_hotttnesss'] - $track2['song_hotttnesss']);
 		$properties['danceability']	= abs($track1['danceability'] - $track2['danceability']);
 		$properties['energy']		= abs($track1['energy'] - $track2['energy']);
-		$properties['jaccard']		= 1 - FillerList::jaccard($start['similar'], $end['similar']);
+		$properties['jaccard']		= 1 - FillerList::jaccard($track1['similar'], $track2['similar']);
 		if(is_array($track1['tags']) && is_array($track2['tags'])) {
 			$properties['tags']			= 1 - (2 * count(array_intersect($track1['tags'], $track2['tags'])) ) / (count($track1) + count($track2));
 		}
-		
 		
 		if($track1['year'] != 0 && $track2['year'] != 0)
 			$properties['year'] = abs($track1['year'] - $track2['year']) / 100;
 		
 		if($track1['tempo'] != 0 && $track2['tempo'] != 0)
-			$properties['tempo'] += abs($track1['tempo'] - $track2['tempo']) / 100;
+			$properties['tempo'] = abs($track1['tempo'] - $track2['tempo']) / 100;
 		
 		return array_sum($properties) / sizeof($properties);
 	}

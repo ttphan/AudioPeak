@@ -24,6 +24,8 @@ function playNext(vidId, name,artist,image) {
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				//TODO goed afhandelen.
+				console.log(thrownError);
+				console.log(xhr);
 				$('#ResultsDiv').html('Error: Waarschijnlijk iets met php of de verbinden. Probeer opnieuw.');
 			}
 		});		

@@ -9,7 +9,7 @@ class MySQL
 	function __construct() 
 	{
 		$this->conn = mysql_connect('localhost', $this->username, $this->password);
-		if(!conn)
+		if(!$this->conn)
 			die('Could not connect: ' . mysql_error());
 		
 		mysql_select_db($this->dbname) or die("Unable to select database '".$this->dbname."'.<br />username: ".$this->username."<br />password: ".$this->password."<br/>MySQL error: ".mysql_error()."");
@@ -101,6 +101,7 @@ class MySQL
 
 		// All tags
 		$tags = $this->query($query);
+		$res = array();
 		
 		for($i = 0; $i < mysql_num_rows($tags); $i++) {
 			$temp = mysql_fetch_array($tags, MYSQL_ASSOC);
@@ -108,6 +109,21 @@ class MySQL
 		}
 		
 		return $res;
+	}
+	
+	public function getTid($track) {
+		$title = $track->getName();
+		$artist = $track->getArtist();
+		
+		$query = "SELECT `tid`
+				FROM `tracks`
+				WHERE `title` LIKE '%".mysql_real_escape_string($title)."%'
+				AND `artist_name` LIKE '%".mysql_real_escape_string($artist['name'])."%'
+				LIMIT 1";
+		
+		$result = mysql_fetch_array($this->query($query), MYSQL_ASSOC);
+
+		return $result['tid'];
 	}
 }
 ?>

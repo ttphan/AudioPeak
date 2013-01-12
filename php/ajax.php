@@ -99,9 +99,10 @@ if(isset($_GET['getInfo']))
 
 if(isset($_GET['getFillerEndArtist']))
 {
-	
+	$db = new MySQL();
 	$start = new DetailedTrack($_GET['getFillerStartArtist'], $_GET['getFillerStartTrack']);
 	$end = new DetailedTrack($_GET['getFillerEndArtist'], $_GET['getFillerEndTrack']);
+	
 	$fList = new FillerList($start, $end);
 
 	for ($i = 1; $i <= 5; $i++) {
@@ -112,11 +113,13 @@ if(isset($_GET['getFillerEndArtist']))
 		}
 	}
 	if(!is_null($list)){
-		foreach($list as $track) {
-			$artist = $track->getArtist();	
+		foreach($list as $tid) {
+			$trackMeta = $db->getSong($tid);
+			$track = new DetailedTrack($trackMeta['artist_name'], $trackMeta['title']);
+			$artist = $track->getArtist();
 			$res = array(
 						'artist' => $artist['name'], 
-						'title' => $track->getName(),
+						'title' => $trackMeta['title'],
 						'image' => $track->getImage(),
 					);
 			break;
