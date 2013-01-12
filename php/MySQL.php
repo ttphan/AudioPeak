@@ -74,7 +74,7 @@ class MySQL
 		return $result;
 	}
 	
-	/*public function getTags($tid, $getTopTag = false)
+	public function getTags($tid, $getTopTag = false)
 	{		
 		$trackmeta = $this->getSong($tid);
 
@@ -105,6 +105,6 @@ class MySQL
 		}
 		
 		return $res;
-	}*/
+	}
 }
 ?>
