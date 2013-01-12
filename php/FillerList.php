@@ -45,6 +45,8 @@ class FillerList extends TrackList
 		$db = new MySQL();
 		$start = $db->getSong($startID);
 		$end = $db->getSong($endID);
+		//$start['tags'] = $db->getTags($startID);
+		//$end['tags'] = $db->getTags($endID);
 		
 		$res = array();
 		
@@ -102,13 +104,14 @@ class FillerList extends TrackList
 		$scores = array();
 		foreach($candidates as $candidate) {
 			if($candidate['tid'] != $start['tid'] && $candidate['tid'] != $end['tid']) {
+				//$candidate['tags'] = $db->getTags($candidate['tid']);
 				$leftDist = FillerList::getDistance($start, $candidate);
 				$rightDist = FillerList::getDistance($candidate, $end);
 				//echo $startID." <-".$leftDist."-> ".$candidate['tid']." <-".$rightDist."-> ".$endID."\n";
 				
 				$diff = abs($leftDist-$rightDist);
 				$sum = $leftDist + $rightDist;
-		
+				
 				$score = $diff + $sum;
 				$scores[$candidate['tid']] = $score;
 			}
@@ -120,6 +123,8 @@ class FillerList extends TrackList
 		
 		$rand = mt_rand(0,sizeof(minIds)-1);
 		$winrar = $minIds[$rand];
+		//$asdf = $db->getTags($winrar);
+		//print_r($asdf);
 		return $winrar;
 	}
 	
@@ -146,11 +151,16 @@ class FillerList extends TrackList
 	
 	protected static function getDistance($track1, $track2)
 	{
+		//echo (is_array($track1['tags']) && is_array($track2['tags'])) ? 'YES' : 'nope';
 		$properties = array();
 		$properties['hotttnesss']	= abs($track1['song_hotttnesss'] - $track2['song_hotttnesss']);
 		$properties['danceability']	= abs($track1['danceability'] - $track2['danceability']);
 		$properties['energy']		= abs($track1['energy'] - $track2['energy']);
 		$properties['jaccard']		= 1 - FillerList::jaccard($start['similar'], $end['similar']);
+		//if(is_array($track1['tags']) && is_array($track2['tags'])) {
+		//	$properties['tags']			= 1 - (2 * count(array_intersect($track1['tags'], $track2['tags'])) ) / (count($track1) + count($track2));
+		//}
+		
 		
 		if($track1['year'] != 0 && $track2['year'] != 0)
 			$properties['year'] = abs($track1['year'] - $track2['year']) / 100;

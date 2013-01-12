@@ -2,7 +2,7 @@
 class MySQL 
 {
 	private $username = "root";
-	private $password = "toor";
+	private $password = "csrulez";
 	private $dbname = "audiopeak";
 	private $conn;
 	
@@ -73,5 +73,38 @@ class MySQL
 		}
 		return $result;
 	}
+	
+	/*public function getTags($tid, $getTopTag = false)
+	{		
+		$trackmeta = $this->getSong($tid);
+
+		// Filters out the artist-tags and low-value tags.
+		$query = "SELECT `tags`.`tag`
+				FROM `tags`, `tid_tag`, `tids`
+				WHERE `tids`.`tid` = '".$tid."'
+				AND `tids`.`id` = `tid_tag`.`tid`
+				AND `tags`.`id` = `tid_tag`.`tag`
+				AND `tid_tag`.`val` > 5
+				AND `tags`.`tag` != '".mysql_real_escape_string($trackmeta['artist_name'])."'
+				AND `tags`.`tag` != '".mysql_real_escape_string($trackmeta['title'])."'";
+		
+		// 1 tag
+		if($getTopTag === true) {
+			$query = $query.' LIMIT 1';
+			$tag = $this->query($query);			
+			
+			return mysql_fetch_array($tag, MYSQL_ASSOC);
+		}
+
+		// All tags
+		$tags = $this->query($query);
+		
+		for($i = 0; $i < mysql_num_rows($tags); $i++) {
+			$temp = mysql_fetch_array($tags, MYSQL_ASSOC);
+			$res[] = $temp['tag'];
+		}
+		
+		return $res;
+	}*/
 }
 ?>
