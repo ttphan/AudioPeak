@@ -53,13 +53,16 @@ class FillerList extends TrackList
 		print_r($start);
 		print_r($end);
 		
-		$numFillers = round(abs($start['tempo'] - $end['tempo']) / 20, 0, PHP_ROUND_HALF_UP);
+		/*$numFillers = round(abs($start['tempo'] - $end['tempo']) / 20, 0, PHP_ROUND_HALF_UP);
+		if($start['tempo'] + $end['tempo'] == 0) {
+			$numFillers = 1;
+		}
 		echo "NUMBER OF FILLERS NEEDED: " . $numFillers."\n";
 		
-		if($numFillers > 0) {
-			$filler = FillerList::getOneFiller($start, $end);
-			$res[] = $filler;
-			if($numFillers > 1) { // need more fillers
+		if($numFillers > 0) {*/
+		$filler = FillerList::getOneFiller($start, $end);
+		$res[] = $filler;
+			/*if($numFillers > 1) { // need more fillers
 				if($numFillers % 2 == 0) {
 					array_combine($res, FillerList::computeFillers($filler['id'], $endID));
 					array_combine(FillerList::computeFillers($startID, $filler['id']), $res);
@@ -70,10 +73,7 @@ class FillerList extends TrackList
 						array_combine($res, FillerList::computeFillers($filler['id'], $endID));
 					} else {
 						array_combine(FillerList::computeFillers($startID, $filler['id']), $res);
-					}
-				}
-			}
-		}
+					}*/
 		return $res;
 	}
 	
@@ -125,11 +125,11 @@ class FillerList extends TrackList
 				$scores[$candidate['tid']] = $score;
 			}
 		}
+
 		$minIds = FillerList::minIds($scores);
-		
 		echo sizeof($minIds)."/".sizeof($scores)." possible winrars \n";
 		
-		$rand = mt_rand(0,sizeof(minIds)-1);
+		$rand = mt_rand(0,sizeof($minIds)-1);
 		$winrar = $minIds[$rand];
 
 		return $winrar;
@@ -146,13 +146,15 @@ class FillerList extends TrackList
 	protected static function minIds($arr)
 	{
 		$min = min($arr);
+		asort($arr);
 		$minIds = array();
-		// get which are max
-		foreach($arr as $key => $val) {
-			if ($val == $min) {
-				$minIds[] = $key;
-			}
+		$index = array_keys($arr);
+		
+		for($i = 0; $i < 3; $i++) {
+			$minIds[] = $index[$i];
 		}
+		//print_r($minIds);
+		//print_r($arr);
 		return $minIds;
 	}
 	

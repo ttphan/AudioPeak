@@ -25,9 +25,12 @@ class MySQL
 			$tempo2 = $temp;
 		}
 		
+		$meanTempo = ($tempo1 + $tempo2) / 2;
+		$tempo1 = $meanTempo - 1;
+		$tempo2 = $meanTempo + 1;
+		
 		$result = $this->query("SELECT * FROM `tracks` WHERE `tempo` >= ". $tempo1 ." AND `tempo` <=". $tempo2);
 		$data = array();
-		
 		for($i = 0; $i < mysql_num_rows($result); $i++) {
 			$data[] = mysql_fetch_array($result, MYSQL_ASSOC);
 		}
