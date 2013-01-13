@@ -169,7 +169,7 @@ class FillerList extends TrackList
 		$properties['energy']		= abs($track1['energy'] - $track2['energy']);
 		$properties['jaccard']		= 1 - FillerList::jaccard($track1['similar'], $track2['similar']);
 		if(is_array($track1['tags']) && is_array($track2['tags'])) {
-			$properties['tags']			= 1 - (2 * count(array_intersect($track1['tags'], $track2['tags'])) ) / (count($track1) + count($track2));
+			$properties['tags']			= 1 - (2 * count(array_intersect($track1['tags'], $track2['tags'])) ) / (count($track1['tags']) + count($track2['tags']));
 		}
 		
 		if($track1['year'] != 0 && $track2['year'] != 0)
