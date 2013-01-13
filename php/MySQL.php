@@ -19,17 +19,12 @@ class MySQL
 	{
 		$tempo1 = round($tempo1,0,PHP_ROUND_HALF_DOWN);
 		$tempo2 = round($tempo2,0,PHP_ROUND_HALF_UP);
-		if($tempo1 > $tempo2) {
-			$temp = $tempo1;
-			$tempo1 = $tempo2;
-			$tempo2 = $temp;
-		}
 		
 		$meanTempo = ($tempo1 + $tempo2) / 2;
-		$tempo1 = $meanTempo - 1;
-		$tempo2 = $meanTempo + 1;
+		$floor = $meanTempo - 1;
+		$ceiling = $meanTempo + 1;
 		
-		$result = $this->query("SELECT * FROM `tracks` WHERE `tempo` >= ". $tempo1 ." AND `tempo` <=". $tempo2);
+		$result = $this->query("SELECT * FROM `tracks` WHERE `tempo` >= ". $floor ." AND `tempo` <=". $ceiling);
 		$data = array();
 		for($i = 0; $i < mysql_num_rows($result); $i++) {
 			$data[] = mysql_fetch_array($result, MYSQL_ASSOC);
