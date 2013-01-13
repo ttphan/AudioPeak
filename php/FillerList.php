@@ -122,9 +122,7 @@ class FillerList extends TrackList
 				$rightDist = FillerList::getDistance($candidate, $end);
 				//echo $startID." <-".$leftDist."-> ".$candidate['tid']." <-".$rightDist."-> ".$endID."\n";
 				
-				$diff = abs($leftDist-$rightDist);
-				$sum = $leftDist + $rightDist;
-				$score = $diff + $sum;
+				$score = min($leftDist,$rightDist)/max($leftDist,$rightDist);
 
 				$scores[$candidate['tid']] = $score;
 			}
