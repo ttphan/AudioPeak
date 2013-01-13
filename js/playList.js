@@ -11,6 +11,7 @@ function playNext(vidId, name,artist,image) {
 	}
 	else{
 		$.ajax({
+			$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
 			type: "GET",
 			url: "php/ajax.php",
 			data: {getFillerStartTrack : playList[playList.length-1].name,
@@ -70,6 +71,7 @@ function getFillerJSON(json){
 	playList.push(filler);
 	playList.push(myTrack);
 	showPlayList();
+	$('#ResultsDiv').html('Filler toegevoegd!');
 }
 
 function next() {
