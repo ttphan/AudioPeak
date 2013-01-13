@@ -61,13 +61,18 @@ function showExtraInfo(json){
 
 function showPlayList(){
 	$('#balkflow').html('');
-	for (var i=0;i<playList.length;i++) { 	
+	for (var i=0;i<playList.length;i++) { 
+		var title = playList[i].name;
+		var artist = playList[i].artist;
 		if(playList[i].image == ''){
-			$('#balkflow').append('<img src=\"' + 'images/albumgeen.jpg' + '\" alt="alubmimg" id=\"' + i + '\" />');	
+			$('#balkflow').append('<img src=\"' + 'images/albumgeen.jpg' +
+					'\" alt=\"' + artist + '-' + title + '\" ' + 'class=\"albumimg\" id=\"' + i + '\" />');	
 		}
 		else{
-			$('#balkflow').append('<img src=\"' + playList[i].image + '\" alt="alubmimg" id=\"' + i + '\" />');	
+			$('#balkflow').append('<img src=\"' + playList[i].image +
+					'\" alt=\"' + artist + '-' + title + '\" ' + 'class=\"albumimg\" id=\"' + i + '\" />');
 		}
 	}
 	$('#balkflow').width(114*playList.length);
+	$('.albumimg').jcaption();
 }
