@@ -5,7 +5,6 @@ require_once 'Tag.php';
 require_once 'TagList.php';
 require_once 'DetailedTrack.php';
 require_once 'FillerList.php';
-require_once 'Database.php';
 
 /*  getFiller()
 if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))

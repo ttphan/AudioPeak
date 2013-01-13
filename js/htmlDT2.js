@@ -55,7 +55,7 @@ function showExtraInfo(json){
 	$('#palbum').html(json['album']);
 	$('#wikiSum').html(json['wiki']['summary']);	
 	
-	console.log(json['topTags']['0']['name']);
+	//console.log(json['topTags']['0']['name']);
 }
 
 

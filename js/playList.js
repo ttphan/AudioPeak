@@ -10,8 +10,8 @@ function playNext(vidId, name,artist,image) {
 		createVideo();
 	}
 	else{
-		$.ajax({
-			$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
+		$('#ResultsDiv').html('<img src="images/ajax-loader.gif" width="200" height="157" alt="ajax loader gif">');
+		$.ajax({	
 			type: "GET",
 			url: "php/ajax.php",
 			data: {getFillerStartTrack : playList[playList.length-1].name,

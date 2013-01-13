@@ -2,7 +2,7 @@
 class MySQL 
 {
 	private $username = "root";
-	private $password = "csrulez";
+	private $password = "";
 	private $dbname = "audiopeak";
 	private $conn;
 	
