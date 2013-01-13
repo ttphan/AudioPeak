@@ -124,7 +124,7 @@ class FillerList extends TrackList
 				
 				$score = min($leftDist,$rightDist)/max($leftDist,$rightDist);
 
-				$scores[$candidate['tid']] = $score;
+				$scores[$candidate['tid']] = 1-$score;
 			}
 		}
 
