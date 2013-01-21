@@ -6,6 +6,8 @@ require_once 'TagList.php';
 require_once 'DetailedTrack.php';
 require_once 'FillerList.php';
 
+error_reporting(E_ERROR | E_PARSE);
+
 /*  getFiller()
 if(isset($_POST['getFillerStart']) && isset($_POST['getFillerEnd']))
 {
